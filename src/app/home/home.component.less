@@ -1,0 +1,44 @@
+.homePage {
+  .banner {
+    min-height: 100vh;
+    height: 100vh;
+  }
+  .bg1 {
+    background: url('../../assets/images/slide01.jpg') no-repeat;
+    background-size: cover;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+  }
+  .bg2 {
+    background: url('../../assets/images/slide02.jpg') no-repeat;
+    background-size: cover;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+  }
+  .bg3 {
+    background: url('../../assets/images/slide03.jpg') no-repeat;
+    background-size: cover;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+  }
+  ::ng-deep .ant-carousel .slick-slider, 
+  ::ng-deep .ant-carousel .slick-list, 
+  ::ng-deep .ant-carousel .slick-track {
+    height: 100%;
+  }
+  ::ng-deep .ant-carousel .slick-dots li button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+  }
+  ::ng-deep .ant-carousel .slick-dots li.slick-active button {
+    width: 10px;
+  }
+  ::ng-deep .ant-carousel .slick-dots {
+    bottom: 45px;
+  }
+}

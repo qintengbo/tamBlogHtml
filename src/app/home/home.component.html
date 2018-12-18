@@ -1,3 +1,7 @@
-<p>
-  home works!
-</p>
+<div class="homePage">
+  <div class="banner">
+    <nz-carousel [nzEffect]="'fade'" [nzAutoPlaySpeed]="5000" nzAutoPlay>
+      <div nz-carousel-content [class]="item.class" *ngFor="let item of bannerArr"></div>
+    </nz-carousel>
+  </div>
+</div>
