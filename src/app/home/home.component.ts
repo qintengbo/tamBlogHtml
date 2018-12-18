@@ -9,18 +9,18 @@ export class HomeComponent implements OnInit {
   bannerArr: Array<any> = [
     {
       class: 'bg1',
-      title: '1',
-      subtitle: ''
+      title: 'Hello World',
+      subtitle: 'Welcome to Tam Blog'
     },
     {
       class: 'bg2',
       title: '2',
-      subtitle: ''
+      subtitle: 'gsdgfsdfsdf'
     },
     {
       class: 'bg3',
       title: '3',
-      subtitle: ''
+      subtitle: 'fsdfsdfgfdgdf'
     }
   ];
 
