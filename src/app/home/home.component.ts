@@ -8,17 +8,17 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   bannerArr: Array<any> = [
     {
-      class: 'bg1',
+      imgUrl: '../../assets/images/slide01.jpg',
       title: 'Hello World',
       subtitle: 'Welcome to Tam Blog'
     },
     {
-      class: 'bg2',
+      imgUrl: '../../assets/images/slide02.jpg',
       title: '2',
       subtitle: 'gsdgfsdfsdf'
     },
     {
-      class: 'bg3',
+      imgUrl: '../../assets/images/slide03.jpg',
       title: '3',
       subtitle: 'fsdfsdfgfdgdf'
     }
