@@ -16,6 +16,4 @@ export class AppComponent {
       scriptUrl: '//at.alicdn.com/t/font_578343_h8jjpv6bmec.js'
     });
   }
-
-  title = 'tamBlogHtml';
 }

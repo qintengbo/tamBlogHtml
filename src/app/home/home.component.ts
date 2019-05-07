@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd';
+import { HttpRequestService } from 'services/httpRequest.service';
 
 @Component({
   selector: 'app-home',
@@ -6,27 +8,31 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
-  bannerArr: Array<any> = [
-    {
-      imgUrl: '../../assets/images/slide01.jpg',
-      title: 'Hello World',
-      subtitle: 'Welcome to Tam Blog'
-    },
-    {
-      imgUrl: '../../assets/images/slide02.jpg',
-      title: '2',
-      subtitle: 'gsdgfsdfsdf'
-    },
-    {
-      imgUrl: '../../assets/images/slide03.jpg',
-      title: '3',
-      subtitle: 'fsdfsdfgfdgdf'
-    }
-  ];
+  bannerArr: Array<any> = [];
 
-  constructor() { }
+  constructor(
+    private httpRequestService: HttpRequestService,
+    private message: NzMessageService
+  ) { }
+
+  // 获取轮播图列表
+  getBannerList(): void {
+    this.httpRequestService.bannerListRequest().subscribe(res => {
+      const { code, data, msg } = res;
+      if (code === 0) {
+        this.bannerArr = data.list;
+      } else {
+        this.message.error(msg);
+      }
+    });
+  }
+
+  trackById(index: number, item: { id: string }): string {
+    return item.id;
+  }
 
   ngOnInit() {
+    this.getBannerList();
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="homePage">
   <div class="banner">
-    <nz-carousel [nzEffect]="'fade'" [nzAutoPlaySpeed]="5000" nzAutoPlay>
-      <div nz-carousel-content class="bannerWrap" *ngFor="let item of bannerArr">
+    <nz-carousel [nzEffect]="'fade'" [nzDots]="false" [nzAutoPlaySpeed]="5000" nzAutoPlay>
+      <div nz-carousel-content class="bannerWrap" *ngFor="let item of bannerArr; trackBy: trackById">
         <img [src]="item.imgUrl" alt="">
         <div class="bannerTitle">
           <p>{{ item.subtitle }}</p>
