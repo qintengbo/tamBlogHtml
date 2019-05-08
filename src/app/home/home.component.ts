@@ -27,8 +27,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  trackById(index: number, item: { id: string }): string {
-    return item.id;
+  trackById(index: number, item: { _id: string }): string {
+    return item._id;
   }
 
   ngOnInit() {
