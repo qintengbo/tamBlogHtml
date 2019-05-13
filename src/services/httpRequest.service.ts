@@ -27,7 +27,7 @@ export class HttpRequestService {
 
   // 轮播图列表
   bannerListRequest(): Observable<Response> {
-    return this.http.get<Response>(`${this.path}/banner`).pipe(
+    return this.http.get<Response>(`${this.path}/bannerList`).pipe(
       catchError(this.handleError<any>('bannerListRequest'))
     );
   }
