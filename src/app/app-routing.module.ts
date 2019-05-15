@@ -5,14 +5,15 @@ import { HomeComponent } from '@/home/home.component';
 const appRoutes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    data: { title: '首页' }
   },
   {
     path: 'articleList',
     loadChildren: '@/article-list/article-list.module#ArticleListModule'
   },
   {
-    path: 'articleDetail',
+    path: ':id',
     loadChildren: '@/article-detail/article-detail.module#ArticleDetailModule'
   },
   {

@@ -5,7 +5,8 @@ import { SteppingPitComponent } from './stepping-pit.component';
 const routes: Routes = [
   {
     path: '',
-    component: SteppingPitComponent
+    component: SteppingPitComponent,
+    data: { title: '踩坑记' }
   }
 ];
 

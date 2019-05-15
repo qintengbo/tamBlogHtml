@@ -5,7 +5,8 @@ import { ArticleDetailComponent } from './article-detail.component';
 const routes: Routes = [
   {
     path: '',
-    component: ArticleDetailComponent
+    component: ArticleDetailComponent,
+    data: { title: '文章详情' }
   }
 ];
 
