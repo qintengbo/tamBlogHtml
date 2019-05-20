@@ -54,6 +54,59 @@
       opacity: 0.35;
     }
   }
+
+  .container {
+    padding: 100px 0;
+    margin: 0 auto;
+    max-width: 1200px;
+    h1 {
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    .articleWrap {
+      padding: 45px;
+      background: #fff;
+      .articleImg {
+        margin: -45px -45px 45px;
+        position: relative;
+        height: 350px;
+        overflow: hidden;
+        img {
+          position: absolute;
+          width: 100%;
+          display: block;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
+        }
+      }
+      .leadWrp {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        padding: 10px 15px;
+        line-height: 28px;
+        font-size: 14px;
+        color: #999;
+        background: #f6f6f6;
+      }
+      .content {
+        max-height: 360px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .articleInfoWrap {
+    margin-bottom: 20px;
+    color: #999;
+    span {
+      margin-right: 15px;
+    }
+  }
+
   ::ng-deep .ant-carousel .slick-slider, 
   ::ng-deep .ant-carousel .slick-list, 
   ::ng-deep .ant-carousel .slick-track {

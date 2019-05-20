@@ -1,6 +1,6 @@
 <div class="homePage">
   <div class="banner">
-    <nz-carousel [nzEffect]="'fade'" [nzDots]="false" [nzAutoPlaySpeed]="5000" nzAutoPlay>
+    <nz-carousel [nzEffect]="'fade'" [nzDots]="false" [nzAutoPlaySpeed]="10000" nzAutoPlay>
       <div nz-carousel-content class="bannerWrap" *ngFor="let item of bannerArr; trackBy: trackById">
         <img [src]="item.imgUrl" alt="">
         <div class="bannerTitle">
@@ -11,6 +11,17 @@
     </nz-carousel>
   </div>
   <div class="container">
-    
+    <div class="articleWrap">
+      <div class="articleImg">
+        <img [src]="articleNew.coverImg" alt="" />
+      </div>
+      <h1>{{ articleNew.title }}</h1>
+      <div class="articleInfoWrap">
+        <span>作者：覃腾波</span>
+        <span>发布时间：<i>{{ articleNew.updateDate | date: "y-MM-dd HH:mm:ss" }}</i></span>
+      </div>
+      <div class="leadWrp">{{ articleNew.lead }}</div>
+      <div class="content" markdown [data]="articleNew.content"></div>
+    </div>
   </div>
 </div>

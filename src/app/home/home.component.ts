@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
+import { Article } from 'class/article/Article';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,12 @@ import { HttpRequestService } from 'services/httpRequest.service';
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
-  bannerArr: Array<any> = [];
+  bannerArr: Array<any> = []; // 轮播图列表
+  articleList: Array<any> = []; // 文章列表
+  articleNew = { // 最新文章
+    title: '',
+    coverImg: ''
+  };
 
   constructor(
     private httpRequestService: HttpRequestService,
@@ -27,12 +33,26 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // 获取最新文章列表
+  getArticleList(): void {
+    this.httpRequestService.articleListRequest({ page: 1, size: 5 }).subscribe(res => {
+      const { code, data, msg } = res;
+      if (code === 0) {
+        this.articleNew = data.list[0];
+        this.articleList = data.list.splice(1, 5);
+      } else {
+        this.message.error(msg);
+      }
+    });
+  }
+
   trackById(index: number, item: { _id: string }): string {
     return item._id;
   }
 
   ngOnInit() {
     this.getBannerList();
+    this.getArticleList();
   }
 
 }

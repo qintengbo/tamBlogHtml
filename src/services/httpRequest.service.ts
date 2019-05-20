@@ -32,6 +32,13 @@ export class HttpRequestService {
     );
   }
 
+  // 文章列表
+  articleListRequest(data: {}): Observable<Response> {
+    return this.http.get<Response>(`${this.path}/articleList`, { params: data }).pipe(
+      catchError(this.handleError<any>('articleListRequest'))
+    );
+  }
+
   /**
    * 处理失败的http操作
    * @param result - 观察结果，可选值
