@@ -22,6 +22,37 @@
       </div>
       <div class="leadWrp">{{ articleNew.lead }}</div>
       <div class="content" markdown [data]="articleNew.content"></div>
+      <div class="moreBtn">继续阅读</div>
+    </div>
+    <div class="articleListWrap" nz-row nzGutter="56">
+      <div nz-col class="articleCol" nzSpan="12" *ngFor="let item of articleList; trackBy: trackById">
+        <div class="articleCard">
+          <div class="articleListImg">
+            <img [src]="item.coverImg" alt="" />
+          </div>
+          <h2>{{ item.title }}</h2>
+          <div class="articleInfoWrap textCenter">
+            <span>作者：覃腾波</span>
+            <span>发布时间：<i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i></span>
+          </div>
+          <nz-divider></nz-divider>
+          <div class="articleLead">{{ item.lead }}</div>
+          <div class="moreBtn">查看详情</div>
+        </div>
+      </div>
+    </div>
+    <div class="searchWrap">
+      <div class="searchTitle">首页没有你想看的文章？</div>
+      <div class="searchSubtitle">在下方输入框输入关键字进行搜索或点击按钮前往文章列表</div>
+      <div class="inputWrap">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="输入关键字查询" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon type="search"></i>
+        </ng-template>
+        <div class="toBtn">查看更多文章</div>
+      </div>
     </div>
   </div>
 </div>

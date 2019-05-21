@@ -1,12 +1,23 @@
 <nz-layout>
-  <!-- <nz-header class="header reveal alt">
-    <div class="logo">
-      <img src="../../assets/images/login_logo.png">
-      <span>Tam Blog</span>
+  <nz-header class="headerWrap" [ngClass]="{ 'reveal': isNavFixed, 'alt': !isNavFixed }">
+    <div class="header">
+      <div class="logo">
+        <!-- <img src="../../assets/images/login_logo.png"> -->
+        <span>覃腾波的个人博客</span>
+      </div>
+      <ul class="menu" nz-menu [nzMode]="'horizontal'">
+        <li nz-menu-item [nzSelected]="activeIndex == ''" routerLink="">首页</li>
+        <li nz-menu-item [nzSelected]="activeIndex == 'articleList || articleDetail'" routerLink="/articleList">文章</li>
+        <li nz-menu-item [nzSelected]="activeIndex == 'steppingPit'" routerLink="/steppingPit">踩坑</li>
+        <li nz-menu-item>摄影</li>
+        <li nz-menu-item>关于</li>
+      </ul>
     </div>
-  </nz-header> -->
+  </nz-header>
   <nz-content>
     <router-outlet></router-outlet>
   </nz-content>
-  <nz-footer>Footer</nz-footer>
+  <nz-footer class="footer">
+    <p>Copyright © 2018 QinTengBo. 版权所有 <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备18152109号-1</a></p>
+  </nz-footer>
 </nz-layout>
