@@ -9,6 +9,9 @@
         </div>
       </div>
     </nz-carousel>
+    <div class="downBtn">
+      <i nz-icon [iconfont]="'icon-xiajiantou'"></i>
+    </div>
   </div>
   <div class="container">
     <div class="articleWrap">
@@ -42,17 +45,7 @@
       </div>
     </div>
     <div class="searchWrap">
-      <div class="searchTitle">首页没有你想看的文章？</div>
-      <div class="searchSubtitle">在下方输入框输入关键字进行搜索或点击按钮前往文章列表</div>
-      <div class="inputWrap">
-        <nz-input-group [nzSuffix]="suffixIconSearch">
-          <input type="text" nz-input placeholder="输入关键字查询" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <i nz-icon type="search"></i>
-        </ng-template>
-        <div class="toBtn">查看更多文章</div>
-      </div>
+      <div class="toBtn">查看更多文章</div>
     </div>
   </div>
 </div>

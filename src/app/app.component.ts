@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   ) {
     // 引入iconfont.cn上的自定义图标
     this.iconService.fetchFromIconfont({
-      scriptUrl: '//at.alicdn.com/t/font_578343_h8jjpv6bmec.js'
+      scriptUrl: '//at.alicdn.com/t/font_578343_2m9eyl84uhf.js'
     });
   }
 

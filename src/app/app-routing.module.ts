@@ -6,7 +6,7 @@ const appRoutes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    data: { title: '首页' }
+    data: { title: '分享前端技术和记录踩坑之旅的个人网站' }
   },
   {
     path: 'articleList',

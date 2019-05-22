@@ -10,7 +10,6 @@ import {
   NzGridModule,
   NzDividerModule,
   NzMenuModule,
-  NzInputModule,
   NzIconModule,
   NZ_I18N,
   zh_CN
@@ -41,7 +40,6 @@ registerLocaleData(zh);
     NzGridModule,
     NzDividerModule,
     NzMenuModule,
-    NzInputModule,
     NzIconModule,
     MarkdownModule.forRoot(), // 导入ngx-markdown插件
     AppRoutingModule

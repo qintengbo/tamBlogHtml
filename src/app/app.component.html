@@ -18,6 +18,47 @@
     <router-outlet></router-outlet>
   </nz-content>
   <nz-footer class="footer">
-    <p>Copyright © 2018 QinTengBo. 版权所有 <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备18152109号-1</a></p>
+    <div class="fotWrap" nz-row>
+      <div nz-col nzSpan="10">
+        <div>关于本博客</div>
+        <div class="fotInfo">
+          博客及后台管理系统使用<strong>Angular7</strong> + <strong>Ng-Zorro</strong>搭建，
+          服务端使用<strong>Node.js</strong> + <strong>Express</strong>开发。代码部署在阿里云服务器，图片存储使用七牛云。<br/>
+          博客致力于分享最新的前端知识以及记录个人踩过的坑，会不定期更新。如果你有任何疑问或者在本博客找到任何问题，欢迎邮件联系我！
+        </div>
+      </div>
+      <div nz-col nzSpan="7" class="padleft">
+        <div class="fotTitle">友情链接</div>
+        <div class="fotContent">
+          <a href="http://www.ruanyifeng.com/home.html" title="阮一峰的个人网站">阮一峰的个人网站</a>
+        </div>
+        <div class="fotContent">
+          <a href="https://www.liaoxuefeng.com/" title="廖雪峰的官方网站">廖雪峰的官方网站</a>
+        </div>
+        <div class="fotContent">
+          <a href="https://www.zhangxinxu.com/" title="张鑫旭的个人主页">张鑫旭的个人主页</a>
+        </div>
+      </div>
+      <div nz-col nzSpan="7" class="padleft">
+        <div class="fotTitle">联系方式</div>
+        <div class="fotContent">
+          <i nz-icon [iconfont]="'icon-tubiao209'"></i>
+          <span>qintb@qintengbo.com</span>
+        </div>
+        <div class="fotContent">
+          <i nz-icon nzType="github" nzTheme="outline"></i>
+          <a href="https://github.com/qintengbo" title="github">github.com/qintengbo</a>
+        </div>
+        <div class="fotContent">
+          <i nz-icon [iconfont]="'icon-lofter'"></i>
+          <a href="http://qintengbo.lofter.com" title="lofter">qintengbo.lofter.com</a>
+        </div>
+        <div class="fotContent">
+          <i nz-icon [iconfont]="'icon-jianti'"></i>
+          <a href="https://www.jianshu.com/u/5f5a359361ac" title="简书">www.jianshu.com/u/5f5a359361ac</a>
+        </div>
+      </div>
+    </div>
+    <p>Copyright © 2019 qintengbo.com. All Right Reserved <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备18152109号-1</a></p>
   </nz-footer>
 </nz-layout>
