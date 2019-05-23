@@ -8,30 +8,33 @@
   width: 100%;
   z-index: 999;
   background: #fff;
+  box-shadow: 0 0 0.5rem 0 rgba(144, 144, 144, 0.25);
   .header {
     max-width: 1200px;
     margin: 0 auto;
     .logo {
       display: inline-block;
-      color: #fff;
-      span {
-        font-size: 18px;
+      color: #000;
+      height: 100%;
+      img {
+        height: 40px;
+        margin-bottom: 5px;
       }
     }
     .menu {
       float: right;
       background: transparent;
       border: 0;
-      color: #a6a6a6;
+      color: #7d7d7d;
     }
   }
 
   ::ng-deep .ant-menu-horizontal > .ant-menu-item:hover {
-    color: #fff;
+    color: #000;
     border-bottom: 2px solid transparent;
   }
   ::ng-deep .ant-menu-horizontal > .ant-menu-item-selected {
-    color: #fff;
+    color: #000;
     border-bottom: 2px solid transparent;
   }
 }

@@ -2,12 +2,11 @@
   <nz-header class="headerWrap" [ngClass]="{ 'reveal': isNavFixed, 'alt': !isNavFixed }">
     <div class="header">
       <div class="logo">
-        <!-- <img src="../../assets/images/login_logo.png"> -->
-        <span>覃腾波的个人博客</span>
+        <img src="../../assets/images/logo.png">
       </div>
       <ul class="menu" nz-menu [nzMode]="'horizontal'">
         <li nz-menu-item [nzSelected]="activeIndex == ''" routerLink="">首页</li>
-        <li nz-menu-item [nzSelected]="activeIndex == 'articleList || articleDetail'" routerLink="/articleList">文章</li>
+        <li nz-menu-item [nzSelected]="activeIndex == 'articleList' || activeIndex == 'articleDetail'" routerLink="/articleList">文章</li>
         <li nz-menu-item [nzSelected]="activeIndex == 'steppingPit'" routerLink="/steppingPit">踩坑</li>
         <li nz-menu-item>摄影</li>
         <li nz-menu-item>关于</li>
@@ -23,20 +22,20 @@
         <div>关于本博客</div>
         <div class="fotInfo">
           博客及后台管理系统使用<strong>Angular7</strong> + <strong>Ng-Zorro</strong>搭建，
-          服务端使用<strong>Node.js</strong> + <strong>Express</strong>开发。代码部署在阿里云服务器，图片存储使用七牛云。<br/>
+          服务端使用<strong>Node.js</strong> + <strong>Express</strong> + <strong>MongoDB</strong>开发。代码部署在阿里云，图片存储使用七牛云。<br/>
           博客致力于分享最新的前端知识以及记录个人踩过的坑，会不定期更新。如果你有任何疑问或者在本博客找到任何问题，欢迎邮件联系我！
         </div>
       </div>
       <div nz-col nzSpan="7" class="padleft">
         <div class="fotTitle">友情链接</div>
         <div class="fotContent">
-          <a href="http://www.ruanyifeng.com/home.html" title="阮一峰的个人网站">阮一峰的个人网站</a>
+          <a href="http://www.ruanyifeng.com/home.html" title="阮一峰的个人网站" target="_blank">阮一峰的个人网站</a>
         </div>
         <div class="fotContent">
-          <a href="https://www.liaoxuefeng.com/" title="廖雪峰的官方网站">廖雪峰的官方网站</a>
+          <a href="https://www.liaoxuefeng.com/" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
         </div>
         <div class="fotContent">
-          <a href="https://www.zhangxinxu.com/" title="张鑫旭的个人主页">张鑫旭的个人主页</a>
+          <a href="https://www.zhangxinxu.com/" title="张鑫旭的个人主页" target="_blank">张鑫旭的个人主页</a>
         </div>
       </div>
       <div nz-col nzSpan="7" class="padleft">
@@ -47,15 +46,15 @@
         </div>
         <div class="fotContent">
           <i nz-icon nzType="github" nzTheme="outline"></i>
-          <a href="https://github.com/qintengbo" title="github">github.com/qintengbo</a>
+          <a href="https://github.com/qintengbo" title="github" target="_blank">github.com/qintengbo</a>
         </div>
         <div class="fotContent">
           <i nz-icon [iconfont]="'icon-lofter'"></i>
-          <a href="http://qintengbo.lofter.com" title="lofter">qintengbo.lofter.com</a>
+          <a href="http://qintengbo.lofter.com" title="lofter" target="_blank">qintengbo.lofter.com</a>
         </div>
         <div class="fotContent">
           <i nz-icon [iconfont]="'icon-jianti'"></i>
-          <a href="https://www.jianshu.com/u/5f5a359361ac" title="简书">www.jianshu.com/u/5f5a359361ac</a>
+          <a href="https://www.jianshu.com/u/5f5a359361ac" title="简书" target="_blank">www.jianshu.com/u/5f5a359361ac</a>
         </div>
       </div>
     </div>

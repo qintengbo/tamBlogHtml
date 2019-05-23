@@ -11,10 +11,12 @@ export class HomeComponent implements OnInit {
   bannerArr: Array<any> = []; // 轮播图列表
   articleList: Array<any> = []; // 文章列表
   articleNew = {
+    _id: '',
     title: '',
     coverImg: '',
     content: '',
-    updateDate: ''
+    updateDate: '',
+    classification: {}
   };
 
   constructor(

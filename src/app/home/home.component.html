@@ -20,8 +20,12 @@
       </div>
       <h1>{{ articleNew.title }}</h1>
       <div class="articleInfoWrap">
-        <span>作者：覃腾波</span>
-        <span>发布时间：<i>{{ articleNew.updateDate | date: "y-MM-dd HH:mm:ss" }}</i></span>
+        <span><i nz-icon nzType="user" nzTheme="outline"></i>覃腾波</span>
+        <span>
+          <i nz-icon [iconfont]="'icon-date'"></i>
+          <i>{{ articleNew.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
+        </span>
+        <span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ articleNew.classification.name }}</span>
       </div>
       <div class="leadWrp">{{ articleNew.lead }}</div>
       <div class="content" markdown [data]="articleNew.content"></div>
@@ -35,8 +39,12 @@
           </div>
           <h2>{{ item.title }}</h2>
           <div class="articleInfoWrap textCenter">
-            <span>作者：覃腾波</span>
-            <span>发布时间：<i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i></span>
+            <span><i nz-icon nzType="user" nzTheme="outline"></i>覃腾波</span>
+            <span>
+              <i nz-icon [iconfont]="'icon-date'"></i>
+              <i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
+            </span>
+            <span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
           </div>
           <nz-divider></nz-divider>
           <div class="articleLead">{{ item.lead }}</div>
