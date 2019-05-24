@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-article-list',
@@ -11,7 +10,8 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 export class ArticleListComponent implements OnInit {
   imgUrl = '';
   articleList: Array<any> = []; // 文章列表
-  total: number;
+  classificationList: Array<any> = []; // 分类列表
+  total = 0;
   params = { // 筛选列表请求参数
     keyWord: '',
     classification: null,
@@ -31,7 +31,6 @@ export class ArticleListComponent implements OnInit {
       const { code, data, msg } = res;
       if (code === 0) {
         this.imgUrl = data.list[1].imgUrl;
-        this.total = data.total;
       } else {
         this.message.error(msg);
       }
@@ -44,6 +43,19 @@ export class ArticleListComponent implements OnInit {
       const { code, data, msg } = res;
       if (code === 0) {
         this.articleList = data.list;
+        this.total = data.total;
+      } else {
+        this.message.error(msg);
+      }
+    });
+  }
+
+  // 获取分类列表
+  getClassificationList(): void {
+    this.httpRequestService.classificationListRequest().subscribe(res => {
+      const { code, data, msg } = res;
+      if (code === 0) {
+        this.classificationList = data.list;
       } else {
         this.message.error(msg);
       }
@@ -53,6 +65,7 @@ export class ArticleListComponent implements OnInit {
   ngOnInit() {
     this.getImgUrl();
     this.getArticleList();
+    this.getClassificationList();
   }
 
 }

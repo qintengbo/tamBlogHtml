@@ -39,6 +39,13 @@ export class HttpRequestService {
     );
   }
 
+  // 分类列表
+  classificationListRequest(): Observable<Response> {
+    return this.http.get<Response>(`${this.path}/classificationList`).pipe(
+      catchError(this.handleError<any>('classificationListRequest'))
+    );
+  }
+
   /**
    * 处理失败的http操作
    * @param result - 观察结果，可选值

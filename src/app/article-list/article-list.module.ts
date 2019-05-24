@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NzIconModule, NzPaginationModule } from 'ng-zorro-antd';
 import { ArticleListComponent } from './article-list.component';
 import { ArticleListRoutingModule } from './article-list-routing.module';
 
@@ -9,6 +10,8 @@ import { ArticleListRoutingModule } from './article-list-routing.module';
   ],
   imports: [
     CommonModule,
+    NzIconModule,
+    NzPaginationModule,
     ArticleListRoutingModule
   ]
 })

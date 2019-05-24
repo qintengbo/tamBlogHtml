@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   ) {
     // 引入iconfont.cn上的自定义图标
     this.iconService.fetchFromIconfont({
-      scriptUrl: '//at.alicdn.com/t/font_578343_yvkj4cin2al.js'
+      scriptUrl: '//at.alicdn.com/t/font_578343_i0s4su5x5u.js'
     });
   }
 
@@ -57,6 +57,8 @@ export class AppComponent implements OnInit {
     // 判断当前页面路由和滚动条位置决定是否显示导航栏
     routeSource.pipe(map(route => route.parent.url))
     .subscribe(event => {
+      // 路由跳转后保持页面在顶部位置
+      this.window.scrollTo(0, 0);
       this.activeIndex = event['value'][0].path;
       if (!event['value'][0].path && this.document.body.scrollTop < this.document.body.clientHeight) {
         this.isNavFixed = false;

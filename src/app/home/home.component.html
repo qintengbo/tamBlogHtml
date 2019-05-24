@@ -4,8 +4,8 @@
       <div nz-carousel-content class="bannerWrap" *ngFor="let item of bannerArr; trackBy: trackById">
         <img [src]="item.imgUrl" alt="">
         <div class="bannerTitle">
+          <p>{{ item.mainTitle }}</p>
           <p>{{ item.subtitle }}</p>
-          <h2>{{ item.mainTitle }}</h2>
         </div>
       </div>
     </nz-carousel>
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="searchWrap">
-      <div class="toBtn">查看更多文章</div>
+      <div class="toBtn" routerLink="/articleList">查看更多文章</div>
     </div>
   </div>
 </div>

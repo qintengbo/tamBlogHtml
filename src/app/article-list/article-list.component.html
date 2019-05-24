@@ -5,10 +5,32 @@
 	</div>
 	<div class="container">
 		<div class="articleListWrap">
-			<div class="articleWrap">
+			<div class="articleWrap clearfix" *ngFor="let item of articleList">
 				<div class="imgWrap">
-					<img src="http://cdn.qintengbo.com/093948xyt7oconm4aoui44.jpg" alt="封面图" />
+					<img [src]="item.coverImg" alt="封面图" />
 				</div>
+				<div class="articleContent">
+					<h2>{{ item.title }}</h2>
+					<div class="articleInfoWrap">
+						<span><i nz-icon nzType="user" nzTheme="outline"></i>覃腾波</span>
+						<span>
+							<i nz-icon [iconfont]="'icon-date'"></i>
+							<i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
+						</span>
+						<span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
+					</div>
+					<div class="articleLead">{{ item.lead }}</div>
+				</div>
+			</div>
+			<div class="articleClassWrap">
+				<div class="title">文章分类</div>
+				<div class="classBox"><i nz-icon [iconfont]="'icon-yuandianzhong'"></i>全部 （<i>{{ total }}</i>）</div>
+				<div class="classBox" *ngFor="let item of classificationList">
+					<i nz-icon [iconfont]="'icon-yuandianzhong'"></i>{{ item.name }} （<i>{{ item.articleNum }}</i>）
+				</div>
+			</div>
+			<div class="paginationWrap" *ngIf="total > 0">
+				<nz-pagination [nzPageIndex]="1" [nzTotal]="total"></nz-pagination>
 			</div>
 		</div>
 	</div>
