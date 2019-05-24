@@ -16,7 +16,10 @@ export class HomeComponent implements OnInit {
     coverImg: '',
     content: '',
     updateDate: '',
-    classification: {}
+    lead: '',
+    classification: {
+      name: ''
+    }
   };
 
   constructor(
