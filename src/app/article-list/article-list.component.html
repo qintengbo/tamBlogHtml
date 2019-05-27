@@ -7,7 +7,7 @@
 		<div class="articleListWrap">
 			<div class="articleWrap clearfix" *ngFor="let item of articleList">
 				<div class="imgWrap">
-					<img [src]="item.coverImg" alt="封面图" />
+					<img [src]="item.coverImg" alt="封面图" onerror="this.src='http://www.bianbiangou.cn/index/ICON2.png'" />
 				</div>
 				<div class="articleContent">
 					<h2>{{ item.title }}</h2>
@@ -24,8 +24,7 @@
 			</div>
 			<div class="articleClassWrap">
 				<div class="title">文章分类</div>
-				<div class="classBox"><i nz-icon [iconfont]="'icon-yuandianzhong'"></i>全部 （<i>{{ total }}</i>）</div>
-				<div class="classBox" *ngFor="let item of classificationList">
+				<div class="classBox" [ngClass]="{'select': params.classification === item._id}" *ngFor="let item of classificationList" (click)="changeClassification(item._id)">
 					<i nz-icon [iconfont]="'icon-yuandianzhong'"></i>{{ item.name }} （<i>{{ item.articleNum }}</i>）
 				</div>
 			</div>

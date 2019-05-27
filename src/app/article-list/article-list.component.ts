@@ -62,6 +62,12 @@ export class ArticleListComponent implements OnInit {
     });
   }
 
+  // 切换分类
+  changeClassification(id: string | null): void {
+    this.params.classification = id;
+    this.getArticleList();
+  }
+
   ngOnInit() {
     this.getImgUrl();
     this.getArticleList();

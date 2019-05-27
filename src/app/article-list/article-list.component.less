@@ -53,8 +53,8 @@
 		.articleListWrap {
 			position: relative;
 			margin-bottom: 20px;
-			padding: 28px;
-			min-height: 660px;
+			padding: 28px 28px 60px;
+			min-height: 700px;
 			.articleWrap {
 				margin-bottom: 45px;
 				margin-right: 270px;
@@ -134,9 +134,21 @@
 						}
 					}
 				}
+				.select {
+					color: @global-color;
+					i {
+						color: @global-color;
+						&:last-child {
+							color: @global-color;
+						}
+					}
+				}
 			}
 			.paginationWrap {
-				margin-top: 40px;
+				position: absolute;
+				bottom: 28px;
+				left: 0;
+				width: 100%;
 				text-align: center;
 			}
 		}
