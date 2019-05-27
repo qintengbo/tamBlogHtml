@@ -13,7 +13,7 @@ const appRoutes: Routes = [
     loadChildren: '@/article-list/article-list.module#ArticleListModule'
   },
   {
-    path: 'articleDetail',
+    path: 'articleDetail/:id',
     loadChildren: '@/article-detail/article-detail.module#ArticleDetailModule'
   },
   {

@@ -7,23 +7,24 @@
 		<div class="articleListWrap">
 			<div class="articleWrap clearfix" *ngFor="let item of articleList">
 				<div class="imgWrap">
-					<img [src]="item.coverImg" alt="封面图" onerror="this.src='http://www.bianbiangou.cn/index/ICON2.png'" />
+					<img [src]="item.coverImg" alt="封面图" onerror="this.src='../../assets/images/loadImg.png'" />
 				</div>
 				<div class="articleContent">
-					<h2>{{ item.title }}</h2>
+					<h2 routerLink="/articleDetail/{{ item._id }}">{{ item.title }}</h2>
 					<div class="articleInfoWrap">
 						<span><i nz-icon nzType="user" nzTheme="outline"></i>覃腾波</span>
 						<span>
-							<i nz-icon [iconfont]="'icon-date'"></i>
+							<i nz-icon nzType="calendar" nzTheme="outline"></i>
 							<i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
 						</span>
 						<span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
+						<span><i nz-icon [iconfont]="'icon-yuedu'"></i><i>{{ item.readNum }}</i></span>
 					</div>
 					<div class="articleLead">{{ item.lead }}</div>
 				</div>
 			</div>
 			<div class="articleClassWrap">
-				<div class="title">文章分类</div>
+				<div class="title"><i nz-icon nzType="file-text" nzTheme="outline"></i> 文章分类</div>
 				<div class="classBox" [ngClass]="{'select': params.classification === item._id}" *ngFor="let item of classificationList" (click)="changeClassification(item._id)">
 					<i nz-icon [iconfont]="'icon-yuandianzhong'"></i>{{ item.name }} （<i>{{ item.articleNum }}</i>）
 				</div>
