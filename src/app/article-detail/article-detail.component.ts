@@ -11,6 +11,8 @@ import { Article } from 'class/article/Article';
 })
 export class ArticleDetailComponent implements OnInit {
   id: string; // 文章id
+  preId: string; // 上一篇文章id
+  nxtId: string; // 下一篇文章id
   articleInfo: Article;
 
   constructor(
@@ -25,7 +27,9 @@ export class ArticleDetailComponent implements OnInit {
     this.httpRequestService.articleInfoRequest(id).subscribe(res => {
       const { code, data, msg } = res;
       if (code === 0) {
-        this.articleInfo = data;
+        this.articleInfo = data.articleData;
+        this.preId = data.preId;
+        this.nxtId = data.nxtId;
       } else {
         this.message.error(msg);
       }
