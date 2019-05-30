@@ -1,4 +1,33 @@
 <div class="articleDeatailPage">
-  {{ preId }}<br/>
-  {{ nxtId }}
+	<h1 class="header">article details</h1>
+	<div class="contentWrap">
+		<div class="headImg">
+			<img [src]="articleInfo.coverImg" alt="封面图" onerror="this.src='../../assets/images/loadImg.png'" />
+		</div>
+		<h1>{{ articleInfo.title }}</h1>
+		<div class="articleInfoWrap">
+			<span><i nz-icon nzType="user" nzTheme="outline"></i>覃腾波</span>
+			<span>
+				<i nz-icon nzType="calendar" nzTheme="outline"></i>
+				<i>{{ articleInfo.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
+			</span>
+			<span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ articleInfo.classification.name }}</span>
+			<span><i nz-icon [iconfont]="'icon-yuedu'"></i><i>{{ articleInfo.readNum }}</i></span>
+		</div>
+		<div class="leadWrp">{{ articleInfo.lead }}</div>
+		<div class="content" markdown [data]="articleInfo.content" ngPreserveWhitespaces ngNonBindable></div>
+		<div class="tagWrap">
+			<i nz-icon nzType="tags" nzTheme="outline"></i>
+			<nz-tag *ngFor="let item of articleInfo.tag"># {{ item.name }}</nz-tag>
+		</div>
+		<div class="copyright">
+			<span>©版权归作者所有，转载请注明出处</span>
+			<div class="btnWrap">
+				<button nz-button nzType="primary" nzSize="small" (click)="goToList()"><i nz-icon [iconfont]="'icon-fanhui'"></i> 返回列表</button>
+				<button *ngIf="preId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(preId)"><i nz-icon nzType="left" nzTheme="outline"></i> 上一篇</button>
+				<button *ngIf="nxtId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(nxtId)">下一篇 <i nz-icon nzType="right" nzTheme="outline"></i></button>
+			</div>
+		</div>
+		<nz-divider></nz-divider>
+	</div>
 </div>

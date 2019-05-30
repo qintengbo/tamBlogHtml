@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
 import { Article } from 'class/article/Article';
@@ -18,6 +19,7 @@ export class ArticleDetailComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private titleService: Title,
     private httpRequestService: HttpRequestService,
     private message: NzMessageService
   ) { }
@@ -30,10 +32,21 @@ export class ArticleDetailComponent implements OnInit {
         this.articleInfo = data.articleData;
         this.preId = data.preId;
         this.nxtId = data.nxtId;
+        this.titleService.setTitle(`覃腾波的个人博客 - ${data.articleData.title}`);
       } else {
         this.message.error(msg);
       }
     });
+  }
+
+  // 返回文章列表
+  goToList(): void {
+    this.router.navigate(['/articleList']);
+  }
+
+  // 跳转到上一篇或下一篇
+  goToOtherArticle(id: string): void {
+    this.router.navigate(['/articleDetail', id]);
   }
 
   ngOnInit() {

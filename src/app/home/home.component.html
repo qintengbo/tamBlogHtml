@@ -29,7 +29,7 @@
         <span><i nz-icon [iconfont]="'icon-yuedu'"></i><i>{{ articleNew.readNum }}</i></span>
       </div>
       <div class="leadWrp">{{ articleNew.lead }}</div>
-      <div class="content" markdown [data]="articleNew.content"></div>
+      <div class="content" markdown [data]="articleNew.content" ngPreserveWhitespaces ngNonBindable></div>
       <div class="moreBtn" routerLink="/articleDetail/{{ articleNew._id }}">继续阅读</div>
     </div>
     <div class="articleListWrap" nz-row nzGutter="56">
