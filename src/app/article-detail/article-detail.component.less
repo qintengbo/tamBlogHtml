@@ -74,11 +74,14 @@
 			}
 		}
 		.copyright {
+			position: relative;
 			margin-top: 15px;
 			color: #999;
 			font-size: 12px;
 			.btnWrap {
-				float: right;
+				position: absolute;
+				right: 0;
+				bottom: 0;
 				button {
 					margin-right: 10px;
 					font-size: 14px;
@@ -88,5 +91,34 @@
 				}
 			}
 		}
+		.inputWrap {
+			position: relative;
+			margin-top: 50px;
+			.formWrap {
+				margin-left: 60px;
+			}
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 44px;
+				height: 44px;
+				border-radius: 50%;
+				border: 1px solid #f5f5f5;
+				padding: 2px;
+			}
+			.comInput {
+				width: calc(100% - 15px);
+			}
+			.submitBtn {
+				float: right;
+				margin-left: 10px;
+				margin-top: 4px;
+			}
+		}
+	}
+
+	::ng-deep .ant-form-explain {
+		font-size: 12px;
 	}
 }
