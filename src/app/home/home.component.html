@@ -26,7 +26,7 @@
           <i>{{ articleNew.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
         </span>
         <span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ articleNew.classification.name }}</span>
-        <span><i nz-icon [iconfont]="'icon-yuedu'"></i><i>{{ articleNew.readNum }}</i></span>
+        <span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ articleNew.readNum }}</i></span>
       </div>
       <div class="leadWrp">{{ articleNew.lead }}</div>
       <div class="content" markdown [data]="articleNew.content" ngPreserveWhitespaces ngNonBindable></div>
@@ -46,7 +46,7 @@
               <i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
             </span>
             <span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
-            <span><i nz-icon [iconfont]="'icon-yuedu'"></i><i>{{ item.readNum }}</i></span>
+            <span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ item.readNum }}</i></span>
           </div>
           <nz-divider></nz-divider>
           <div class="articleLead">{{ item.lead }}</div>

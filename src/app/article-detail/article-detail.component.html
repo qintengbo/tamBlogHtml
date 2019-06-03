@@ -12,32 +12,34 @@
 				<i>{{ articleInfo.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
 			</span>
 			<span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ articleInfo.classification.name }}</span>
-			<span><i nz-icon [iconfont]="'icon-yuedu'"></i><i>{{ articleInfo.readNum }}</i></span>
+			<span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ articleInfo.readNum }}</i></span>
 		</div>
 		<div class="leadWrp">{{ articleInfo.lead }}</div>
 		<div class="content" markdown [data]="articleInfo.content" ngPreserveWhitespaces ngNonBindable></div>
 		<div class="tagWrap">
-			<i nz-icon nzType="tags" nzTheme="outline"></i>
+			<i nz-icon nzType="tag" nzTheme="outline"></i>
 			<nz-tag *ngFor="let item of articleInfo.tag"># {{ item.name }}</nz-tag>
 		</div>
 		<div class="copyright">
 			<span>©版权归作者所有，转载请注明出处</span>
-			<div class="btnWrap">
-				<button nz-button nzType="primary" nzSize="small" (click)="goToList()"><i nz-icon [iconfont]="'icon-fanhui'"></i> 返回列表</button>
-				<button *ngIf="preId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(preId)"><i nz-icon nzType="left" nzTheme="outline"></i> 上一篇</button>
-				<button *ngIf="nxtId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(nxtId)">下一篇 <i nz-icon nzType="right" nzTheme="outline"></i></button>
-			</div>
+		</div>
+		<div class="btnWrap">
+			<button *ngIf="preId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(preId)"><i nz-icon nzType="left" nzTheme="outline"></i> 上一篇</button>
+			<button nz-button nzType="primary" nzSize="small" (click)="goToList()">返回列表</button>
+			<button *ngIf="nxtId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(nxtId)">下一篇 <i nz-icon nzType="right" nzTheme="outline"></i></button>
 		</div>
 		<div class="inputWrap">
 			<img 
 				[src]="commentForm.value.avatar && !(commentForm.get('avatar')?.dirty && commentForm.get('avatar')?.errors) ? commentForm.value.avatar : '../../assets/images/touxiang.jpg'" 
 				alt="头像" 
+				onerror="this.src='../../assets/images/loadImg.png'"
 			/>
 			<form class="formWrap" nz-form [formGroup]="commentForm" (ngSubmit)="submitForm(commentForm)">
 				<nz-form-item>
 					<nz-form-control [nzSpan]="24">
 						<textarea
 							nz-input
+							maxlength="1000"
 							formControlName="content"
 							placeholder="写下你的评论"
 							[nzAutosize]="{ minRows: 3, maxRows: 6 }"
@@ -52,6 +54,10 @@
 								评论内容不能为空哦！
 							</ng-container>
 						</nz-form-explain>
+						<!-- <div class="tips">
+							<span>评论支持markdown语法</span>
+							<span>{{ commentForm.value.content.length }}/1000</span>
+						</div> -->
 					</nz-form-control>
 				</nz-form-item>
 				<nz-form-item *ngIf="isShow || commentForm.value.content">
@@ -94,9 +100,22 @@
 		<div class="commentListWrap" *ngIf="total > 0">
 			<div class="commentTitle">最新评论 <span>( <i>{{ total }}</i> )</span></div>
 			<nz-divider></nz-divider>
+			<div class="commentInfoWrap" *ngFor="let item of commentList">
+				<img 
+					[src]="item.commenter.avatar || '../../assets/images/touxiang.jpg'" 
+					alt="头像" 
+					onerror="this.src='../../assets/images/loadImg.png'"
+				/>
+				<div class="commentContainer">
+					<div class="name">{{ item.commenter.name }}<i>{{ item.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
+					<div class="commentContent" markdown [data]="item.content" ngPreserveWhitespaces ngNonBindable></div>
+					<div class="comBtn">
+						<span><i nz-icon [iconfont]="'icon-pinglun2'"></i> 回复</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
 <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
 <ng-template #prefixMail><i nz-icon type="mail"></i></ng-template>
 <ng-template #prefixUrl><i nz-icon type="global"></i></ng-template>

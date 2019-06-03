@@ -144,7 +144,7 @@ export class ArticleDetailComponent implements OnInit {
     };
     // 初始化评论表单
     this.commentForm = this.fb.group({
-      content: [ null, [ this.contentValidator ] ],
+      content: [ '', [ this.contentValidator ] ],
       name: [ null, [ Validators.required ] ],
       email: [ null, [ Validators.required, Validators.email ] ],
       avatar: [ '', [ Validators.pattern(/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/) ] ]
