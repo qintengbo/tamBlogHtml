@@ -15,7 +15,6 @@ export class ArticleListComponent implements OnInit {
   params = { // 筛选列表请求参数
     keyWord: '',
     classification: null,
-    status: 0, // 状态，2-未发布，1-已发布，0-全部
     page: 1,
     size: 10
   };
