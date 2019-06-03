@@ -47,10 +47,7 @@
 							(blur)="commentInputBlur()"
 						></textarea>
 						<nz-form-explain *ngIf="commentForm.get('content')?.dirty && commentForm.get('content')?.errors">
-							<ng-container *ngIf="commentForm.get('content')?.hasError('empty')">
-								评论内容不能为空哦！
-							</ng-container>
-							<ng-container *ngIf="commentForm.get('content')?.hasError('required')">
+							<ng-container *ngIf="commentForm.get('content')?.hasError('empty') || commentForm.get('content')?.hasError('required')">
 								评论内容不能为空哦！
 							</ng-container>
 						</nz-form-explain>
@@ -74,7 +71,9 @@
 							<input class="comInput" maxlength="10" nz-input formControlName="name" placeholder="你的昵称">
 						</nz-input-group>
 						<nz-form-explain *ngIf="commentForm.get('name')?.dirty && commentForm.get('name')?.errors">
-							昵称不能为空哦！
+							<ng-container *ngIf="commentForm.get('name')?.hasError('empty') || commentForm.get('name')?.hasError('required')">
+								昵称不能为空哦！
+							</ng-container>
 						</nz-form-explain>
 					</nz-form-control>
 					<nz-form-control [nzSpan]="7">

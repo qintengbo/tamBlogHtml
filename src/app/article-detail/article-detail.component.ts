@@ -118,8 +118,8 @@ export class ArticleDetailComponent implements OnInit {
     }
   }
 
-  // 评论内容自定义验证器
-  contentValidator = (control: FormControl): { [s: string]: boolean } => {
+  // 自定义验证器
+  validator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
     } else if (control.value.match(/^\s*$/)) {
@@ -144,8 +144,8 @@ export class ArticleDetailComponent implements OnInit {
     };
     // 初始化评论表单
     this.commentForm = this.fb.group({
-      content: [ '', [ this.contentValidator ] ],
-      name: [ null, [ Validators.required ] ],
+      content: [ '', [ this.validator ] ],
+      name: [ null, [ this.validator ] ],
       email: [ null, [ Validators.required, Validators.email ] ],
       avatar: [ '', [ Validators.pattern(/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/) ] ]
     });
