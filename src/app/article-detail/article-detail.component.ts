@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
 import { Article } from 'class/article/Article';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Component({
   selector: 'app-article-detail',
@@ -18,6 +19,11 @@ export class ArticleDetailComponent implements OnInit {
   articleInfo: Article;
   commentForm: FormGroup;
   isShow = false;
+  commentList = []; // 评论列表
+  page = 1;
+  size = 10;
+  total = 0; // 全部评论条数
+  mainTotal = 0; // 主评论条数
 
   constructor(
     private fb: FormBuilder,
@@ -37,6 +43,25 @@ export class ArticleDetailComponent implements OnInit {
         this.preId = data.preId;
         this.nxtId = data.nxtId;
         this.titleService.setTitle(`覃腾波的个人博客 - ${data.articleData.title}`);
+      } else {
+        this.message.error(msg);
+      }
+    });
+  }
+
+  // 获取文章评论
+  getArticleCommentList(id: string): void {
+    const params = {
+      page: this.page,
+      size: this.size,
+      articleId: id
+    };
+    this.httpRequestService.articleCommentListRequest(params).subscribe(res => {
+      const { code, data, msg } = res;
+      if (code === 0) {
+        this.commentList = data.list;
+        this.total = data.total;
+        this.mainTotal = data.mainTotal;
       } else {
         this.message.error(msg);
       }
@@ -82,7 +107,15 @@ export class ArticleDetailComponent implements OnInit {
       this.commentForm.controls[i].markAsDirty();
       this.commentForm.controls[i].updateValueAndValidity();
     }
-    console.log(this.commentForm.value.content);
+    if (validateForm.valid) {
+      const params = {
+        articleId: this.id,
+        ...validateForm.value
+      };
+      this.httpRequestService.addCommentRequest(params).subscribe(res => {
+        console.log(res);
+      });
+    }
   }
 
   // 评论内容自定义验证器
@@ -114,11 +147,12 @@ export class ArticleDetailComponent implements OnInit {
       content: [ null, [ this.contentValidator ] ],
       name: [ null, [ Validators.required ] ],
       email: [ null, [ Validators.required, Validators.email ] ],
-      avatar: [ null, [ Validators.pattern(/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/) ] ]
+      avatar: [ '', [ Validators.pattern(/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/) ] ]
     });
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.id = params.get('id');
       this.getArticleInfo(this.id);
+      this.getArticleCommentList(this.id);
     });
   }
 

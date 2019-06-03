@@ -52,6 +52,20 @@ export class HttpRequestService {
     );
   }
 
+  // 新增评论
+  addCommentRequest(data: {}): Observable<Response> {
+    return this.http.post<Response>(`${this.path}/addComment`, data, this.httpOptions).pipe(
+      catchError(this.handleError<any>('addCommentRequest'))
+    );
+  }
+
+  // 获取文章评论
+  articleCommentListRequest(data: {}): Observable<Response> {
+    return this.http.get<Response>(`${this.path}/commentList`, { params: data }).pipe(
+      catchError(this.handleError<any>('articleCommentListRequest'))
+    );
+  }
+
   /**
    * 处理失败的http操作
    * @param result - 观察结果，可选值
