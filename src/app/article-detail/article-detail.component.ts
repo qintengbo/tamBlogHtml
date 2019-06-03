@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
 import { Article } from 'class/article/Article';
-import { identifierModuleUrl } from '@angular/compiler';
 
 @Component({
   selector: 'app-article-detail',
