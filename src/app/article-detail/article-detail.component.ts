@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
+import { CommentBoxService } from 'elements/commentBox/comment-box.service';
 import { Article } from 'class/article/Article';
+import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
 
 @Component({
   selector: 'app-article-detail',
@@ -16,22 +18,29 @@ export class ArticleDetailComponent implements OnInit {
   preId: string; // 上一篇文章id
   nxtId: string; // 下一篇文章id
   articleInfo: Article;
-  commentForm: FormGroup;
-  isShow = false;
   commentList = []; // 评论列表
   page = 1;
   size = 10;
   total = 0; // 全部评论条数
   mainTotal = 0; // 主评论条数
+  isCommentArt = true; // 评论对象是否是文章
+
+  @ViewChild(CommentBoxComponent)
+  private comment: CommentBoxComponent;
 
   constructor(
-    private fb: FormBuilder,
+    injector: Injector,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title,
     private httpRequestService: HttpRequestService,
-    private message: NzMessageService
-  ) { }
+    private message: NzMessageService,
+    private commentService: CommentBoxService
+  ) {
+    // 将自定义组件评论框转化为自定义元素
+    const CommentElement = createCustomElement(CommentBoxComponent, { injector });
+    customElements.define('comment-element', CommentElement);
+  }
 
   // 获取文章详情
   getArticleInfo(id: string): void {
@@ -77,54 +86,28 @@ export class ArticleDetailComponent implements OnInit {
     this.router.navigate(['/articleDetail', id]);
   }
 
-  // 评论框获得焦点
-  commentInputFocus(): void {
-    this.isShow = true;
-  }
-
-  // 评论框失去焦点
-  commentInputBlur(): void {
-    const { content } = this.commentForm.value;
-    if (!content) {
-      this.cancelSubmit();
-    }
-    this.isShow = false;
-  }
-
-  // 取消发送
-  cancelSubmit(): void {
-    this.commentForm.reset();
-    for (const i of Object.keys(this.commentForm.controls)) {
-      this.commentForm.controls[i].markAsPristine();
-      this.commentForm.controls[i].updateValueAndValidity();
-    }
-  }
-
   // 发送
-  submitForm = (validateForm: any) => {
-    for (const i of Object.keys(this.commentForm.controls)) {
-      this.commentForm.controls[i].markAsDirty();
-      this.commentForm.controls[i].updateValueAndValidity();
-    }
-    if (validateForm.valid) {
-      const params = {
-        articleId: this.id,
-        ...validateForm.value
-      };
-      this.httpRequestService.addCommentRequest(params).subscribe(res => {
-        console.log(res);
-      });
-    }
+  submitForm = (data: any) => {
+    const params = {
+      articleId: this.id,
+      ...data
+    };
+    this.httpRequestService.addCommentRequest(params).subscribe(res => {
+      const { code, msg } = res;
+      if (code === 0) {
+        this.message.success(msg);
+        this.comment.cancelSubmit();
+        this.getArticleCommentList(this.id);
+      } else {
+        this.message.error(msg);
+      }
+    });
   }
 
-  // 自定义验证器
-  validator = (control: FormControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { required: true };
-    } else if (control.value.match(/^\s*$/)) {
-      return { empty: true, error: true };
-    }
-    return {};
+  // 回复
+  reply(e: any, data: {}): void {
+    console.log(e);
+    this.commentService.showAsElement(e.path[2]);
   }
 
   ngOnInit() {
@@ -141,13 +124,6 @@ export class ArticleDetailComponent implements OnInit {
       status: 1,
       createDate: ''
     };
-    // 初始化评论表单
-    this.commentForm = this.fb.group({
-      content: [ '', [ this.validator ] ],
-      name: [ null, [ this.validator ] ],
-      email: [ null, [ Validators.required, Validators.email ] ],
-      avatar: [ '', [ Validators.pattern(/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/) ] ]
-    });
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.id = params.get('id');
       this.getArticleInfo(this.id);

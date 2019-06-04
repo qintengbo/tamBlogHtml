@@ -11,11 +11,14 @@ import {
   NzFormModule
 } from 'ng-zorro-antd';
 import { MarkdownModule } from 'ngx-markdown';
+import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
 import { ArticleDetailComponent } from './article-detail.component';
 import { ArticleDetailRoutingModule } from './article-detail-routing.module';
+import { CommentBoxService } from 'elements/commentBox/comment-box.service';
 
 @NgModule({
   declarations: [
+    CommentBoxComponent,
     ArticleDetailComponent
   ],
   imports: [
@@ -31,6 +34,8 @@ import { ArticleDetailRoutingModule } from './article-detail-routing.module';
     NzFormModule,
     MarkdownModule.forChild(),
     ArticleDetailRoutingModule
-  ]
+  ],
+  providers: [CommentBoxService],
+  entryComponents: [CommentBoxComponent]
 })
 export class ArticleDetailModule { }
