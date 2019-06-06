@@ -25,7 +25,7 @@
 			</div>
 			<div class="articleClassWrap">
 				<div class="title"><i nz-icon nzType="file-text" nzTheme="outline"></i> 文章分类</div>
-				<div class="classBox" [ngClass]="{'select': params.classification === item._id}" *ngFor="let item of classificationList" (click)="changeClassification(item._id)">
+				<div class="classBox" [ngClass]="{'select': params.classification === item._id}" *ngFor="let item of classificationList; trackBy: trackById" (click)="changeClassification(item._id)">
 					<i nz-icon [iconfont]="'icon-yuandianzhong'"></i>{{ item.name }} （<i>{{ item.articleNum }}</i>）
 				</div>
 			</div>

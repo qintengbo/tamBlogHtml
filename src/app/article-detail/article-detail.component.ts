@@ -35,7 +35,7 @@ export class ArticleDetailComponent implements OnInit {
     private titleService: Title,
     private httpRequestService: HttpRequestService,
     private message: NzMessageService,
-    private commentService: CommentBoxService
+    public commentService: CommentBoxService
   ) {
     // 将自定义组件评论框转化为自定义元素
     const CommentElement = createCustomElement(CommentBoxComponent, { injector });
@@ -70,6 +70,9 @@ export class ArticleDetailComponent implements OnInit {
         this.commentList = data.list;
         this.total = data.total;
         this.mainTotal = data.mainTotal;
+        this.commentList.forEach(item => {
+          item.isClick = false;
+        });
       } else {
         this.message.error(msg);
       }
@@ -105,9 +108,18 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   // 回复
-  reply(e: any, data: {}): void {
-    console.log(e);
-    this.commentService.showAsElement(e.path[2]);
+  reply(e: any, data: any): void {
+    if (!data.isClick) {
+      this.commentService.addComponent(e.path[2]);
+    } else {
+      console.log(e);
+      this.commentService.removeComponent(e.path[2]);
+    }
+    data.isClick = !data.isClick;
+  }
+
+  trackById(index: number, item: { _id: string }): string {
+    return item._id;
   }
 
   ngOnInit() {

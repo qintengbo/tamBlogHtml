@@ -67,6 +67,10 @@ export class ArticleListComponent implements OnInit {
     this.getArticleList();
   }
 
+  trackById(index: number, item: { _id: string }): string {
+    return item._id;
+  }
+
   ngOnInit() {
     this.getImgUrl();
     this.getArticleList();
