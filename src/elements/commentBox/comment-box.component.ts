@@ -23,15 +23,6 @@ export class CommentBoxComponent implements OnInit {
     this.isShow = true;
   }
 
-  // 评论框失去焦点
-  commentInputBlur(): void {
-    const { content } = this.commentForm.value;
-    if (!content) {
-      this.cancelSubmit();
-    }
-    this.isShow = false;
-  }
-
   // 发送
   submit = (e: any, validateForm: any) => {
     e.preventDefault();
@@ -51,6 +42,7 @@ export class CommentBoxComponent implements OnInit {
       this.commentForm.controls[i].markAsPristine();
       this.commentForm.controls[i].updateValueAndValidity();
     }
+    this.isShow = false;
   }
 
   // 自定义验证器

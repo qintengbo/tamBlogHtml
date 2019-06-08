@@ -112,8 +112,8 @@ export class ArticleDetailComponent implements OnInit {
     if (!data.isClick) {
       this.commentService.addComponent(e.path[2]);
     } else {
-      console.log(e);
-      this.commentService.removeComponent(e.path[2]);
+      // 移除评论框
+      e.path[2].removeChild(e.path[2].childNodes[3]);
     }
     data.isClick = !data.isClick;
   }

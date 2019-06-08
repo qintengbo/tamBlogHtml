@@ -14,17 +14,21 @@
 					placeholder="写下你的评论"
 					[nzAutosize]="{ minRows: 3, maxRows: 6 }"
 					(focus)="commentInputFocus()"
-					(blur)="commentInputBlur()"
 				></textarea>
 				<nz-form-explain *ngIf="commentForm.get('content')?.dirty && commentForm.get('content')?.errors">
 					<ng-container *ngIf="commentForm.get('content')?.hasError('empty') || commentForm.get('content')?.hasError('required')">
 						评论内容不能为空哦！
 					</ng-container>
 				</nz-form-explain>
+				<span class="tips" *ngIf="isShow || commentForm.value.content"># 评论支持Markdown语法，字数限制1000字</span>
 			</nz-form-control>
 		</nz-form-item>
 		<nz-form-item *ngIf="isShow || commentForm.value.content">
-			<nz-form-control [nzSpan]="7">
+			<nz-form-control [nzSpan]="3" class="bqWrap">
+				<i nz-icon nzType="smile" nzTheme="outline"></i>
+				<span>Ctrl+Enter 发送</span>
+			</nz-form-control>
+			<nz-form-control [nzSpan]="6">
 				<nz-input-group [nzPrefix]="prefixUrl">
 					<input class="comInput" nz-input formControlName="avatar" placeholder="头像网址">
 				</nz-input-group>
@@ -32,7 +36,7 @@
 					头像网址不正确！
 				</nz-form-explain>
 			</nz-form-control>
-			<nz-form-control [nzSpan]="7">
+			<nz-form-control [nzSpan]="6">
 				<nz-input-group [nzPrefix]="prefixUser">
 					<input class="comInput" maxlength="10" nz-input formControlName="name" placeholder="你的昵称">
 				</nz-input-group>
@@ -42,7 +46,7 @@
 					</ng-container>
 				</nz-form-explain>
 			</nz-form-control>
-			<nz-form-control [nzSpan]="7">
+			<nz-form-control [nzSpan]="6">
 				<nz-input-group [nzPrefix]="prefixMail">
 					<input class="comInput" nz-input formControlName="email" placeholder="你的邮箱">
 				</nz-input-group>
