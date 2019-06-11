@@ -14,7 +14,6 @@ import { MarkdownModule } from 'ngx-markdown';
 import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
 import { ArticleDetailComponent } from './article-detail.component';
 import { ArticleDetailRoutingModule } from './article-detail-routing.module';
-import { CommentBoxService } from 'elements/commentBox/comment-box.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +34,6 @@ import { CommentBoxService } from 'elements/commentBox/comment-box.service';
     MarkdownModule.forChild(),
     ArticleDetailRoutingModule
   ],
-  providers: [CommentBoxService],
   entryComponents: [CommentBoxComponent]
 })
 export class ArticleDetailModule { }

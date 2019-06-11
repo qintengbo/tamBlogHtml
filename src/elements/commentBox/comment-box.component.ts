@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
@@ -14,6 +14,9 @@ export class CommentBoxComponent implements OnInit {
   constructor(
     private fb: FormBuilder
   ) { }
+
+  @Input()
+  index: number;
 
   @Output()
   submitForm = new EventEmitter();
@@ -31,7 +34,7 @@ export class CommentBoxComponent implements OnInit {
       this.commentForm.controls[i].updateValueAndValidity();
     }
     if (validateForm.valid) {
-      this.submitForm.emit(validateForm.value);
+      this.submitForm.emit({value: validateForm.value, index: this.index});
     }
   }
 

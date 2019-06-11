@@ -4,7 +4,6 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
-import { CommentBoxService } from 'elements/commentBox/comment-box.service';
 import { Article } from 'class/article/Article';
 import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
 
@@ -23,7 +22,6 @@ export class ArticleDetailComponent implements OnInit {
   size = 10;
   total = 0; // 全部评论条数
   mainTotal = 0; // 主评论条数
-  isCommentArt = true; // 评论对象是否是文章
 
   @ViewChild(CommentBoxComponent)
   private comment: CommentBoxComponent;
@@ -34,8 +32,7 @@ export class ArticleDetailComponent implements OnInit {
     private router: Router,
     private titleService: Title,
     private httpRequestService: HttpRequestService,
-    private message: NzMessageService,
-    public commentService: CommentBoxService
+    private message: NzMessageService
   ) {
     // 将自定义组件评论框转化为自定义元素
     const CommentElement = createCustomElement(CommentBoxComponent, { injector });
@@ -72,6 +69,12 @@ export class ArticleDetailComponent implements OnInit {
         this.mainTotal = data.mainTotal;
         this.commentList.forEach(item => {
           item.isClick = false;
+          item.isStatus = false;
+          if (item.reply.length > 0) {
+            item.reply.forEach((childItem: { isClick: boolean; }) => {
+              childItem.isClick = false;
+            });
+          }
         });
       } else {
         this.message.error(msg);
@@ -93,7 +96,10 @@ export class ArticleDetailComponent implements OnInit {
   submitForm = (data: any) => {
     const params = {
       articleId: this.id,
-      ...data
+      ...data.value,
+      commentId: data.index >= 0 ? this.commentList[data.index]._id : '',
+      isMain: data.index >= 0 ? false : true,
+      beCommenter: data.index >= 0 ? this.commentList[data.index].commenter._id : ''
     };
     this.httpRequestService.addCommentRequest(params).subscribe(res => {
       const { code, msg } = res;
@@ -108,14 +114,22 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   // 回复
-  reply(e: any, data: any): void {
-    if (!data.isClick) {
-      this.commentService.addComponent(e.path[2]);
-    } else {
-      // 移除评论框
-      e.path[2].removeChild(e.path[2].childNodes[3]);
-    }
+  reply(e: any, data: any, parent?: any): void {
+    e.preventDefault();
     data.isClick = !data.isClick;
+    if (data.isMain) {
+      data.reply.forEach((item: { isClick: boolean; }) => {
+        item.isClick = false;
+      });
+      data.isStatus = data.isClick;
+    } else {
+      parent.isClick = false;
+      if (!parent.isClick && !data.isClick) {
+        parent.isStatus = false;
+      } else {
+        parent.isStatus = true;
+      }
+    }
   }
 
   trackById(index: number, item: { _id: string }): string {

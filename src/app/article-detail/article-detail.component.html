@@ -46,6 +46,26 @@
 							<i nz-icon [iconfont]="item.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ item.isClick ? '取消回复' : '回复' }}
 						</span>
 					</div>
+					<div class="childCommentWrap" *ngIf="item.reply.length > 0">
+						<div class="commentInfoWrap" *ngFor="let childItem of item.reply; let n = index; trackBy: trackById">
+							<img 
+								[src]="childItem.commenter.avatar || '../../assets/images/touxiang.jpg'" 
+								alt="头像" 
+								onerror="this.src='../../assets/images/loadImg.png'"
+							/>
+							<div class="commentContainer">
+								<div class="name">{{ childItem.commenter.name }}<i>{{ childItem.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
+								<div class="commentContent" markdown [data]="childItem.content" ngPreserveWhitespaces ngNonBindable></div>
+								<div class="comBtn">
+									<span (click)="reply($event, childItem, item)">
+										<i nz-icon [iconfont]="!item.isClick && childItem.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ !item.isClick && childItem.isClick ? '取消回复' : '回复' }}
+									</span>
+								</div>
+								<app-comment-box *ngIf="childItem.isClick" [index]="n" #comment (submitForm)="submitForm($event)"></app-comment-box>
+							</div>
+						</div>
+					</div>
+					<app-comment-box *ngIf="item.isClick" [index]="i" #comment (submitForm)="submitForm($event)"></app-comment-box>
 				</div>
 			</div>
 		</div>
