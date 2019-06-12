@@ -15,8 +15,8 @@ export class CommentBoxComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
-  @Input()
-  index: number;
+  @Input() index: number;
+  @Input() parentNum: number;
 
   @Output()
   submitForm = new EventEmitter();
@@ -34,7 +34,7 @@ export class CommentBoxComponent implements OnInit {
       this.commentForm.controls[i].updateValueAndValidity();
     }
     if (validateForm.valid) {
-      this.submitForm.emit({value: validateForm.value, index: this.index});
+      this.submitForm.emit({value: validateForm.value, index: this.index, parentNum: this.parentNum});
     }
   }
 

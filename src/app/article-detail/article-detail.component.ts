@@ -69,10 +69,10 @@ export class ArticleDetailComponent implements OnInit {
         this.mainTotal = data.mainTotal;
         this.commentList.forEach(item => {
           item.isClick = false;
-          item.isStatus = false;
           if (item.reply.length > 0) {
-            item.reply.forEach((childItem: { isClick: boolean; }) => {
+            item.reply.forEach((childItem: { isClick: boolean; content: string; beCommenter: { name: any; }; }) => {
               childItem.isClick = false;
+              childItem.content = `<span style="color: #51CCA8">@${childItem.beCommenter.name}</span>，` + childItem.content;
             });
           }
         });
@@ -97,10 +97,20 @@ export class ArticleDetailComponent implements OnInit {
     const params = {
       articleId: this.id,
       ...data.value,
-      commentId: data.index >= 0 ? this.commentList[data.index]._id : '',
-      isMain: data.index >= 0 ? false : true,
-      beCommenter: data.index >= 0 ? this.commentList[data.index].commenter._id : ''
+      isMain: data.index >= 0 ? false : true
     };
+    if (data.index >= 0) {
+      if (data.parentNum >= 0) {
+        params.commentId = this.commentList[data.parentNum]._id;
+        params.beCommenter = this.commentList[data.parentNum].reply[data.index].commenter._id;
+      } else {
+        params.commentId = this.commentList[data.index]._id;
+        params.beCommenter = this.commentList[data.index].commenter._id;
+      }
+    } else {
+      params.commentId = '';
+      params.beCommenter = '';
+    }
     this.httpRequestService.addCommentRequest(params).subscribe(res => {
       const { code, msg } = res;
       if (code === 0) {
@@ -114,22 +124,27 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   // 回复
-  reply(e: any, data: any, parent?: any): void {
+  reply(e: any, data: any, parent?: any, num?: number): void {
     e.preventDefault();
     data.isClick = !data.isClick;
     if (data.isMain) {
       data.reply.forEach((item: { isClick: boolean; }) => {
         item.isClick = false;
       });
-      data.isStatus = data.isClick;
     } else {
       parent.isClick = false;
-      if (!parent.isClick && !data.isClick) {
-        parent.isStatus = false;
-      } else {
-        parent.isStatus = true;
-      }
+      parent.reply.forEach((item: { isClick: boolean; }, index: number) => {
+        if (index !== num) {
+          item.isClick = false;
+        }
+      });
     }
+  }
+
+  // 分页
+  pageIndexChange(page: number): void {
+    this.page = page;
+    this.getArticleCommentList(this.id);
   }
 
   trackById(index: number, item: { _id: string }): string {
