@@ -23,12 +23,12 @@
 		<div class="copyright">
 			<span>©版权归作者所有，转载请注明出处</span>
 		</div>
-		<div class="btnWrap">
+		<div class="btnWrap" #commentTitle>
 			<button *ngIf="preId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(preId)"><i nz-icon nzType="left" nzTheme="outline"></i> 上一篇</button>
 			<button nz-button nzType="primary" nzSize="small" (click)="goToList()">返回列表</button>
 			<button *ngIf="nxtId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(nxtId)">下一篇 <i nz-icon nzType="right" nzTheme="outline"></i></button>
 		</div>
-		<app-comment-box #comment (submitForm)="submitForm($event)"></app-comment-box>
+		<app-comment-box (submitForm)="submitForm($event)"></app-comment-box>
 		<div class="commentListWrap" *ngIf="total > 0">
 			<div class="commentTitle">最新评论 <span>( <i>{{ total }}</i> )</span></div>
 			<nz-divider></nz-divider>
@@ -74,3 +74,21 @@
 		</div>
 	</div>
 </div>
+<nz-modal
+	[(nzVisible)]="isVisible" 
+	nzTitle="图片验证码" 
+	(nzOnCancel)="handleCancel()" 
+	(nzOnOk)="handleOk()"
+>
+	<p>请输入图片中的验证码，不区分大小写：</p>
+	<div>
+		<input 
+			class="modalInput" 
+			nz-input 
+			placeholder="请输入验证码" 
+			[(ngModel)]="imgCodeText"
+			(keyup.enter)="handleOk()"
+		/>
+		<img class="modalImg" [src]="imgCodeSrc" alt="验证码图片" (click)="getNewImgCode()" />
+	</div>
+</nz-modal>
