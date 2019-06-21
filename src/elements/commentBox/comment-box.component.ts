@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { HttpRequestService } from 'services/httpRequest.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-comment-box',
@@ -10,9 +12,14 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 export class CommentBoxComponent implements OnInit {
   commentForm: FormGroup; // 评论表单
   isShow = false;
+  isVisible = false; // 模态框
+  imgCodeSrc = ''; // 验证码svg
+  imgCodeText = ''; // 验证码
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private httpRequestService: HttpRequestService,
+    private message: NzMessageService
   ) { }
 
   @Input() index: number;
@@ -34,7 +41,8 @@ export class CommentBoxComponent implements OnInit {
       this.commentForm.controls[i].updateValueAndValidity();
     }
     if (validateForm.valid) {
-      this.submitForm.emit({value: validateForm.value, index: this.index, parentNum: this.parentNum});
+      this.isVisible = true;
+      this.imgCodeSrc = `${this.httpRequestService.getImgCode()}?${Math.random()}`;
     }
   }
 
@@ -56,6 +64,31 @@ export class CommentBoxComponent implements OnInit {
       return { empty: true, error: true };
     }
     return {};
+  }
+
+  // 更新验证码
+  getNewImgCode(): void {
+    this.imgCodeSrc = `${this.httpRequestService.getImgCode()}?${Math.random()}`;
+  }
+
+  // 关闭模态框
+  handleCancel(): void {
+    this.isVisible = false;
+    this.imgCodeText = '';
+  }
+
+  // 模态框确定
+  handleOk(): void {
+    if (!this.imgCodeText || this.imgCodeText.match(/^\s*$/)) {
+      this.message.error('验证码不能为空');
+      return;
+    }
+    this.submitForm.emit({
+      value: this.commentForm.value,
+      index: this.index,
+      parentNum: this.parentNum,
+      imgCode: this.imgCodeText.toUpperCase()
+    });
   }
 
   ngOnInit() {

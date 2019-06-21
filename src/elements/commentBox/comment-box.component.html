@@ -65,6 +65,24 @@
 			</nz-form-control>
 		</nz-form-item>
 	</form>
+	<nz-modal
+		[(nzVisible)]="isVisible" 
+		nzTitle="图片验证码" 
+		(nzOnCancel)="handleCancel()" 
+		(nzOnOk)="handleOk()"
+	>
+		<p>请输入图片中的验证码，不区分大小写：</p>
+		<div>
+			<input 
+				class="modalInput" 
+				nz-input 
+				placeholder="请输入验证码" 
+				[(ngModel)]="imgCodeText"
+				(keyup.enter)="handleOk()"
+			/>
+			<img class="modalImg" [src]="imgCodeSrc" alt="验证码图片" (click)="getNewImgCode()" />
+		</div>
+	</nz-modal>
 </div>
 <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
 <ng-template #prefixMail><i nz-icon type="mail"></i></ng-template>

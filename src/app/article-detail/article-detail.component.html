@@ -23,12 +23,12 @@
 		<div class="copyright">
 			<span>©版权归作者所有，转载请注明出处</span>
 		</div>
-		<div class="btnWrap" #commentTitle>
+		<div class="btnWrap">
 			<button *ngIf="preId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(preId)"><i nz-icon nzType="left" nzTheme="outline"></i> 上一篇</button>
 			<button nz-button nzType="primary" nzSize="small" (click)="goToList()">返回列表</button>
 			<button *ngIf="nxtId" nz-button nzType="primary" nzSize="small" (click)="goToOtherArticle(nxtId)">下一篇 <i nz-icon nzType="right" nzTheme="outline"></i></button>
 		</div>
-		<app-comment-box (submitForm)="submitForm($event)"></app-comment-box>
+		<app-comment-box (submitForm)="submitForm($event)" #comment></app-comment-box>
 		<div class="commentListWrap" *ngIf="total > 0">
 			<div class="commentTitle">最新评论 <span>( <i>{{ total }}</i> )</span></div>
 			<nz-divider></nz-divider>
@@ -46,7 +46,7 @@
 							<i nz-icon [iconfont]="item.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ item.isClick ? '取消回复' : '回复' }}
 						</span>
 					</div>
-					<app-comment-box *ngIf="item.isClick" [index]="i" #comment (submitForm)="submitForm($event)"></app-comment-box>
+					<app-comment-box *ngIf="item.isClick" [index]="i" #parentComment (submitForm)="submitForm($event)"></app-comment-box>
 					<div class="childCommentWrap" *ngIf="item.reply.length > 0">
 						<div class="commentInfoWrap" *ngFor="let childItem of item.reply; let n = index; trackBy: trackById">
 							<img 
@@ -62,33 +62,15 @@
 										<i nz-icon [iconfont]="!item.isClick && childItem.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ !item.isClick && childItem.isClick ? '取消回复' : '回复' }}
 									</span>
 								</div>
-								<app-comment-box *ngIf="childItem.isClick" [index]="n" [parentNum]="i" #comment (submitForm)="submitForm($event)"></app-comment-box>
+								<app-comment-box *ngIf="childItem.isClick" [index]="n" [parentNum]="i" #childComment (submitForm)="submitForm($event)"></app-comment-box>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="pageination">
-				<nz-pagination [nzPageIndex]="page" [nzTotal]="mainTotal" (nzPageIndexChange)="pageIndexChange($event)"></nz-pagination>
+			<div class="pageination" *ngIf="moreComment">
+				<span (click)="loadMoreComment()"><i nz-icon nzType="arrow-down" nzTheme="outline"></i> 更多评论</span>
 			</div>
 		</div>
 	</div>
 </div>
-<nz-modal
-	[(nzVisible)]="isVisible" 
-	nzTitle="图片验证码" 
-	(nzOnCancel)="handleCancel()" 
-	(nzOnOk)="handleOk()"
->
-	<p>请输入图片中的验证码，不区分大小写：</p>
-	<div>
-		<input 
-			class="modalInput" 
-			nz-input 
-			placeholder="请输入验证码" 
-			[(ngModel)]="imgCodeText"
-			(keyup.enter)="handleOk()"
-		/>
-		<img class="modalImg" [src]="imgCodeSrc" alt="验证码图片" (click)="getNewImgCode()" />
-	</div>
-</nz-modal>

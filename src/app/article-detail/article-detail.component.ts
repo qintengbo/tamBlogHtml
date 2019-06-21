@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequestService } from 'services/httpRequest.service';
-import { WINDOW } from 'services/window.service';
 import { Article } from 'class/article/Article';
 import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
 
@@ -12,7 +11,7 @@ import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.less']
 })
-export class ArticleDetailComponent implements OnInit, AfterViewInit {
+export class ArticleDetailComponent implements OnInit {
   id: string; // 文章id
   preId: string; // 上一篇文章id
   nxtId: string; // 下一篇文章id
@@ -22,25 +21,21 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
   size = 10;
   total = 0; // 全部评论条数
   mainTotal = 0; // 主评论条数
-  commentScrollTop: 0;
-  isVisible = false; // 模态框
-  imgCodeSrc = ''; // 验证码svg
-  imgCodeText = ''; // 验证码
-  formData: any;
+  moreComment = true;
 
   @ViewChild(CommentBoxComponent)
   private comment: CommentBoxComponent;
 
-  @ViewChild('commentTitle')
-  commentTitle: ElementRef;
+  @ViewChild('parentComment') parentComment: any;
+
+  @ViewChild('childComment') childComment: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title,
     private httpRequestService: HttpRequestService,
-    private message: NzMessageService,
-    @Inject(WINDOW) private window: Window
+    private message: NzMessageService
   ) { }
 
   // 获取文章详情
@@ -68,10 +63,7 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
     this.httpRequestService.articleCommentListRequest(params).subscribe(res => {
       const { code, data, msg } = res;
       if (code === 0) {
-        this.commentList = data.list;
-        this.total = data.total;
-        this.mainTotal = data.mainTotal;
-        this.commentList.forEach(item => {
+        data.list.forEach(item => {
           item.isClick = false;
           if (item.reply.length > 0) {
             item.reply.forEach((childItem: { isClick: boolean; content: string; beCommenter: { name: any; }; }) => {
@@ -80,6 +72,14 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
             });
           }
         });
+        this.commentList = this.commentList.concat(data.list);
+        this.total = data.total;
+        this.mainTotal = data.mainTotal;
+        if (this.page < Math.ceil(this.mainTotal / this.size)) {
+          this.moreComment = true;
+        } else {
+          this.moreComment = false;
+        }
       } else {
         this.message.error(msg);
       }
@@ -96,16 +96,43 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/articleDetail', id]);
   }
 
-  // 更新验证码
-  getNewImgCode(): void {
-    this.imgCodeSrc = `${this.httpRequestService.getImgCode()}?${Math.random()}`;
-  }
-
   // 发送
   submitForm = (data: any) => {
-    this.isVisible = true;
-    this.imgCodeSrc = `${this.httpRequestService.getImgCode()}?${Math.random()}`;
-    this.formData = data;
+    let ref: any;
+    const params = {
+      relationId: this.id,
+      ...data.value,
+      isMain: data.index >= 0 ? false : true,
+      imgCode: data.imgCode
+    };
+    if (data.index >= 0) {
+      if (data.parentNum >= 0) {
+        params.commentId = this.commentList[data.parentNum]._id;
+        params.beCommenter = this.commentList[data.parentNum].reply[data.index].commenter._id;
+        ref = this.childComment;
+      } else {
+        params.commentId = this.commentList[data.index]._id;
+        params.beCommenter = this.commentList[data.index].commenter._id;
+        ref = this.parentComment;
+      }
+    } else {
+      params.commentId = '';
+      params.beCommenter = '';
+      ref = this.comment;
+    }
+    this.httpRequestService.addCommentRequest(params).subscribe(res => {
+      const { code, msg } = res;
+      if (code === 0) {
+        this.commentList = [];
+        this.message.success(msg);
+        ref.cancelSubmit();
+        this.getArticleCommentList(this.id);
+        ref.handleCancel();
+      } else {
+        this.message.error(msg);
+        ref.getNewImgCode();
+      }
+    });
   }
 
   // 回复
@@ -126,56 +153,15 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // 分页
-  pageIndexChange(page: number): void {
-    this.page = page;
-    this.getArticleCommentList(this.id);
-    this.window.scrollTo({top: this.commentScrollTop, left: 0, behavior: 'smooth'});
-  }
-
-  // 关闭模态框
-  handleCancel(): void {
-    this.isVisible = false;
-    this.imgCodeText = '';
-  }
-
-  // 模态框确定
-  handleOk(): void {
-    const data = this.formData;
-    if (!this.imgCodeText || this.imgCodeText.match(/^\s*$/)) {
-      this.message.error('验证码不能为空');
-      return;
-    }
-    const params = {
-      relationId: this.id,
-      ...data.value,
-      isMain: data.index >= 0 ? false : true,
-      imgCode: this.imgCodeText.toUpperCase()
-    };
-    if (data.index >= 0) {
-      if (data.parentNum >= 0) {
-        params.commentId = this.commentList[data.parentNum]._id;
-        params.beCommenter = this.commentList[data.parentNum].reply[data.index].commenter._id;
-      } else {
-        params.commentId = this.commentList[data.index]._id;
-        params.beCommenter = this.commentList[data.index].commenter._id;
-      }
+  // 加载更多评论
+  loadMoreComment(): void {
+    this.page += 1;
+    if (this.page <= Math.ceil(this.mainTotal / this.size)) {
+      this.getArticleCommentList(this.id);
     } else {
-      params.commentId = '';
-      params.beCommenter = '';
+      this.moreComment = false;
+      this.page -= 1;
     }
-    this.httpRequestService.addCommentRequest(params).subscribe(res => {
-      const { code, msg } = res;
-      if (code === 0) {
-        this.message.success(msg);
-        this.comment.cancelSubmit();
-        this.getArticleCommentList(this.id);
-        this.handleCancel();
-      } else {
-        this.message.error(msg);
-        this.getNewImgCode();
-      }
-    });
   }
 
   trackById(index: number, item: { _id: string }): string {
@@ -201,10 +187,6 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
       this.getArticleInfo(this.id);
       this.getArticleCommentList(this.id);
     });
-  }
-
-  ngAfterViewInit() {
-    this.commentScrollTop = this.commentTitle.nativeElement.offsetTop;
   }
 
 }
