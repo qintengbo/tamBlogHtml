@@ -68,6 +68,7 @@ export class CommentBoxComponent implements OnInit {
 
   // 更新验证码
   getNewImgCode(): void {
+    this.imgCodeText = '';
     this.imgCodeSrc = `${this.httpRequestService.getImgCode()}?${Math.random()}`;
   }
 

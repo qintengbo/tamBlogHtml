@@ -108,16 +108,19 @@ export class ArticleDetailComponent implements OnInit {
     if (data.index >= 0) {
       if (data.parentNum >= 0) {
         params.commentId = this.commentList[data.parentNum]._id;
+        params.aimsId = this.commentList[data.parentNum].reply[data.index]._id;
         params.beCommenter = this.commentList[data.parentNum].reply[data.index].commenter._id;
         ref = this.childComment;
       } else {
         params.commentId = this.commentList[data.index]._id;
+        params.aimsId = this.commentList[data.index]._id;
         params.beCommenter = this.commentList[data.index].commenter._id;
         ref = this.parentComment;
       }
     } else {
       params.commentId = '';
       params.beCommenter = '';
+      params.aimsId = '';
       ref = this.comment;
     }
     this.httpRequestService.addCommentRequest(params).subscribe(res => {
