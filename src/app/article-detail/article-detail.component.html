@@ -15,7 +15,7 @@
 			<span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ articleInfo.readNum }}</i></span>
 		</div>
 		<div class="leadWrp">{{ articleInfo.lead }}</div>
-		<div class="content" markdown [data]="articleInfo.content" ngPreserveWhitespaces ngNonBindable></div>
+		<div class="content" markdown [data]="articleInfo.content" ngPreserveWhitespaces></div>
 		<div class="tagWrap">
 			<i nz-icon nzType="tag" nzTheme="outline"></i>
 			<nz-tag *ngFor="let item of articleInfo.tag"># {{ item.name }}</nz-tag>
@@ -40,7 +40,7 @@
 				/>
 				<div class="commentContainer">
 					<div class="name">{{ item.commenter.name }}<i>{{ item.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
-					<div class="commentContent" markdown [data]="item.content" ngPreserveWhitespaces ngNonBindable></div>
+					<div class="commentContent" markdown [data]="item.content" ngPreserveWhitespaces></div>
 					<div class="comBtn">
 						<span (click)="reply($event, item)">
 							<i nz-icon [iconfont]="item.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ item.isClick ? '取消回复' : '回复' }}
@@ -56,7 +56,7 @@
 							/>
 							<div class="commentContainer">
 								<div class="name">{{ childItem.commenter.name }}<i>{{ childItem.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
-								<div class="commentContent" markdown [data]="childItem.content" ngPreserveWhitespaces ngNonBindable></div>
+								<div class="commentContent" markdown [data]="childItem.content" ngPreserveWhitespaces></div>
 								<div class="comBtn">
 									<span (click)="reply($event, childItem, item, n)">
 										<i nz-icon [iconfont]="!item.isClick && childItem.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ !item.isClick && childItem.isClick ? '取消回复' : '回复' }}
