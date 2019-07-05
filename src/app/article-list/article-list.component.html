@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<div class="paginationWrap" *ngIf="total > 0">
-				<nz-pagination [nzPageIndex]="1" [nzTotal]="total"></nz-pagination>
+				<nz-pagination [nzPageIndex]="params.page" [nzTotal]="total" [nzPageSize]="params.size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
 			</div>
 		</div>
 	</div>

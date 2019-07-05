@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpRequestService } from 'services/httpRequest.service';
 
 @Component({
@@ -21,7 +22,9 @@ export class ArticleListComponent implements OnInit {
 
   constructor(
     private httpRequestService: HttpRequestService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   // 获取页头背景图
@@ -63,8 +66,13 @@ export class ArticleListComponent implements OnInit {
 
   // 切换分类
   changeClassification(id: string | null): void {
-    this.params.classification = id;
-    this.getArticleList();
+    this.router.navigate(['/articleList', { classification: id }]);
+  }
+
+  // 分页
+  pageChange(num: number): void {
+    this.params.page = num;
+    this.router.navigate(['/articleList', { page: num }]);
   }
 
   trackById(index: number, item: { _id: string }): string {
@@ -73,8 +81,12 @@ export class ArticleListComponent implements OnInit {
 
   ngOnInit() {
     this.getImgUrl();
-    this.getArticleList();
     this.getClassificationList();
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.params.page = Number(params.get('page')) || 1;
+      this.params.classification = params.get('classification') || null;
+      this.getArticleList();
+    });
   }
 
 }
