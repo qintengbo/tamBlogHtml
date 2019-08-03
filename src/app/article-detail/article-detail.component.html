@@ -30,7 +30,7 @@
 		</div>
 		<app-comment-box (submitForm)="submitForm($event)" #comment></app-comment-box>
 		<div class="commentListWrap" *ngIf="total > 0">
-			<div class="commentTitle">最新评论 <span>( <i>{{ total }}</i> )</span></div>
+			<div class="commentTitle">全部评论 <span>( <i>{{ total }}</i> )</span></div>
 			<nz-divider></nz-divider>
 			<div class="commentInfoWrap" *ngFor="let item of commentList; let i = index; trackBy: trackById">
 				<img 
