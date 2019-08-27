@@ -25,7 +25,19 @@
 		</nz-form-item>
 		<nz-form-item *ngIf="isShow || commentForm.value.content">
 			<nz-form-control [nzSpan]="3" class="bqWrap">
-				<i nz-icon nzType="smile" nzTheme="outline"></i>
+				<button
+					class="emojiBtn"
+					type="button"
+					nz-button
+					nz-popover
+					nzPopoverTitle="Title"
+					[nzContent]="emojiWrapTemplate"
+					nzPlacement="bottomLeft"
+					nzTrigger="click"
+					[nzOverlayStyle]="{ left: '-12px' }"
+				>
+					<i nz-icon nzType="smile" nzTheme="outline"></i>
+				</button>
 				<span>按 Enter 发送</span>
 			</nz-form-control>
 			<nz-form-control [nzSpan]="6">
@@ -87,3 +99,17 @@
 <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
 <ng-template #prefixMail><i nz-icon type="mail"></i></ng-template>
 <ng-template #prefixUrl><i nz-icon type="global"></i></ng-template>
+<ng-template #emojiWrapTemplate>
+	<div class="popoverWrap">
+		<div class="orderBtnWrap">
+			<span (click)="emojiTabChange(1)"></span>
+			<span (click)="emojiTabChange(2)"></span>
+			<span (click)="emojiTabChange(3)"></span>
+			<span (click)="emojiTabChange(4)"></span>
+			<span (click)="emojiTabChange(5)"></span>
+		</div>
+		<div class="emojiContent">
+			<span *ngFor="let item of emojiArr">{{ item }}</span>
+		</div>
+	</div>
+</ng-template>

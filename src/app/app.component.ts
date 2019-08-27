@@ -3,7 +3,7 @@ import { NzIconService } from 'ng-zorro-antd';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 import { WINDOW } from 'services/window.service';
 
 @Component({

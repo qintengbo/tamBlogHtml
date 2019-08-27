@@ -10,7 +10,8 @@ import {
   NzGridModule,
   NzFormModule,
   NzPaginationModule,
-  NzModalModule
+  NzModalModule,
+  NzPopoverModule
 } from 'ng-zorro-antd';
 import { MarkdownModule } from 'ngx-markdown';
 import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
@@ -35,6 +36,7 @@ import { ArticleDetailRoutingModule } from './article-detail-routing.module';
     NzFormModule,
     NzModalModule,
     NzPaginationModule,
+    NzPopoverModule,
     MarkdownModule.forChild(),
     ArticleDetailRoutingModule
   ],

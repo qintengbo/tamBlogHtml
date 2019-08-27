@@ -33,18 +33,24 @@
 	}
 	.bqWrap {
 		color: #999;
-		i {
-			margin-right: 10px;
-			font-size: 18px;
-			vertical-align: middle;
-			cursor: pointer;
-		}
 		span {
 			vertical-align: middle;
 		}
+		.emojiBtn {
+			padding: 0;
+			border: 0;
+			height: auto;
+			box-shadow: none;
+			margin-right: 10px;
+			i {
+				font-size: 18px;
+				vertical-align: middle;
+				cursor: pointer;
+			}
+		}
 	}
 
-	::ng-deep .ant-form-explain {
+	:host ::ng-deep .ant-form-explain {
 		font-size: 12px;
 	}
 }
@@ -56,4 +62,53 @@
 }
 .modalImg {
 	cursor: pointer;
+}
+.popoverWrap {
+	width: 320px;
+	.orderBtnWrap {
+		text-align: center;
+		height: 32px;
+		line-height: 32px;
+		span {
+			display: inline-block;
+			width: 8px;
+			height: 8px;
+			background: #8c8c8c;
+			margin: 0 5px;
+			border-radius: 50%;
+			cursor: pointer;
+			transition: background-color 0.1s;
+			&:hover {
+				background: #737373;
+			}
+		}
+	}
+	.emojiContent {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		flex-shrink: 0;
+		span {
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 24px;
+			color: #404040;
+			width: 32px;
+			height: 32px;
+			padding: 4px;
+			border-radius: 4px;
+			cursor: pointer;
+			overflow: hidden;
+			flex-shrink: 0;
+			&:hover {
+				background: rgba(51, 51, 51, 0.1);
+			}
+		}
+	}
+	.emojiTabActive {
+		pointer-events: none;
+		background-color: #595959;
+	}
 }

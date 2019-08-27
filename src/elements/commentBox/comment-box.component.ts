@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { HttpRequestService } from 'services/httpRequest.service';
 import { NzMessageService } from 'ng-zorro-antd';
+import EmojiLib from 'assets/emojis';
 
 @Component({
   selector: 'app-comment-box',
@@ -15,12 +16,15 @@ export class CommentBoxComponent implements OnInit {
   isVisible = false; // 模态框
   imgCodeSrc = ''; // 验证码svg
   imgCodeText = ''; // 验证码
+  emojiArr = []; // emoji库
 
   constructor(
     private fb: FormBuilder,
     private httpRequestService: HttpRequestService,
     private message: NzMessageService
-  ) { }
+  ) {
+    this.emojiArr = EmojiLib['1'];
+  }
 
   @Input() index: number;
   @Input() parentNum: number;
@@ -90,6 +94,11 @@ export class CommentBoxComponent implements OnInit {
       parentNum: this.parentNum,
       imgCode: this.imgCodeText.toUpperCase()
     });
+  }
+
+  // 点击emoji翻页按钮
+  emojiTabChange = (tabNum: string): void => {
+    this.emojiArr = EmojiLib[tabNum];
   }
 
   ngOnInit() {
