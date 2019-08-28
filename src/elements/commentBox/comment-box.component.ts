@@ -17,13 +17,14 @@ export class CommentBoxComponent implements OnInit {
   imgCodeSrc = ''; // 验证码svg
   imgCodeText = ''; // 验证码
   emojiArr = []; // emoji库
+  tabNum = 1;
 
   constructor(
     private fb: FormBuilder,
     private httpRequestService: HttpRequestService,
     private message: NzMessageService
   ) {
-    this.emojiArr = EmojiLib['1'];
+    this.emojiArr = EmojiLib[this.tabNum];
   }
 
   @Input() index: number;
@@ -83,10 +84,18 @@ export class CommentBoxComponent implements OnInit {
   }
 
   // 模态框确定
-  handleOk(): void {
+  handleOk(e?: KeyboardEvent): void {
     if (!this.imgCodeText || this.imgCodeText.match(/^\s*$/)) {
       this.message.error('验证码不能为空');
       return;
+    }
+    /**
+     * 这里是为了解决“Expression has changed after it was checked.
+     * Previous value: 'ng-untouched: true'. Current value: 'ng-untouched: false'.”的报错
+     */
+    if (e) {
+      const input: HTMLInputElement = <HTMLInputElement> e.target;
+      input.blur();
     }
     this.submitForm.emit({
       value: this.commentForm.value,
@@ -97,8 +106,23 @@ export class CommentBoxComponent implements OnInit {
   }
 
   // 点击emoji翻页按钮
-  emojiTabChange = (tabNum: string): void => {
-    this.emojiArr = EmojiLib[tabNum];
+  emojiTabChange = (tabNum: number): void => {
+    this.tabNum = tabNum;
+    this.emojiArr = EmojiLib[this.tabNum];
+  }
+
+  // 点击emoji
+  emojiClick = (item: string): void => {
+    const textValue = this.commentForm.value['content'];
+    if (textValue === null) {
+      this.commentForm.patchValue({
+        content: item
+      });
+      return;
+    }
+    this.commentForm.patchValue({
+      content: textValue + item
+    });
   }
 
   ngOnInit() {

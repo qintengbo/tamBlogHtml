@@ -26,9 +26,11 @@ export class ArticleDetailComponent implements OnInit {
   @ViewChild(CommentBoxComponent)
   private comment: CommentBoxComponent;
 
-  @ViewChild('parentComment') parentComment: any;
+  @ViewChild(CommentBoxComponent)
+  private parentComment: CommentBoxComponent;
 
-  @ViewChild('childComment') childComment: any;
+  @ViewChild(CommentBoxComponent)
+  private childComment: CommentBoxComponent;
 
   constructor(
     private activatedRoute: ActivatedRoute,

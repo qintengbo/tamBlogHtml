@@ -90,7 +90,7 @@
 				nz-input 
 				placeholder="请输入验证码" 
 				[(ngModel)]="imgCodeText"
-				(keyup.enter)="handleOk()"
+				(keyup.enter)="handleOk($event)"
 			/>
 			<img class="modalImg" [src]="imgCodeSrc" alt="验证码图片" (click)="getNewImgCode()" />
 		</div>
@@ -102,14 +102,10 @@
 <ng-template #emojiWrapTemplate>
 	<div class="popoverWrap">
 		<div class="orderBtnWrap">
-			<span (click)="emojiTabChange(1)"></span>
-			<span (click)="emojiTabChange(2)"></span>
-			<span (click)="emojiTabChange(3)"></span>
-			<span (click)="emojiTabChange(4)"></span>
-			<span (click)="emojiTabChange(5)"></span>
+			<span *ngFor="let ele of [1, 2, 3, 4, 5]" (click)="emojiTabChange(ele)" [class.emojiTabActive]="tabNum === ele"></span>
 		</div>
 		<div class="emojiContent">
-			<span *ngFor="let item of emojiArr">{{ item }}</span>
+			<span *ngFor="let item of emojiArr" (click)="emojiClick(item)">{{ item }}</span>
 		</div>
 	</div>
 </ng-template>
