@@ -10,12 +10,12 @@ import { Article } from 'class/article/Article';
 })
 export class HomeComponent implements OnInit {
   bannerArr: Array<any> = []; // 轮播图列表
-  articleList: Array<any> = []; // 文章列表
+  articleList: Array<Article> = []; // 文章列表
   articleNew: Article;
 
   constructor(
     private httpRequestService: HttpRequestService,
-    private message: NzMessageService
+		private message: NzMessageService
   ) { }
 
   // 获取轮播图列表
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
     this.httpRequestService.articleListRequest({ page: 1, size: 5 }).subscribe(res => {
       const { code, data, msg } = res;
       if (code === 0) {
-        this.articleNew = data.list[0];
+				[this.articleNew] = data.list;
         this.articleList = data.list.splice(1, 5);
       } else {
         this.message.error(msg);

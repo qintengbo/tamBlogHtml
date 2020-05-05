@@ -7,7 +7,6 @@
       <ul class="menu" nz-menu [nzMode]="'horizontal'">
         <li nz-menu-item [nzSelected]="activeIndex == ''" routerLink="">首页</li>
         <li nz-menu-item [nzSelected]="activeIndex == 'articleList' || activeIndex == 'articleDetail'" routerLink="/articleList">文章</li>
-        <li nz-menu-item [nzSelected]="activeIndex == 'steppingPit'" routerLink="/steppingPit">踩坑</li>
         <!-- <li nz-menu-item>摄影</li> -->
         <li nz-menu-item>关于</li>
       </ul>
@@ -21,7 +20,7 @@
       <div nz-col nzSpan="10">
         <div>关于本博客</div>
         <div class="fotInfo">
-          博客及后台管理系统使用<strong>Angular7</strong> + <strong>Ng-Zorro</strong>搭建，
+          博客及后台管理系统使用<strong>Angular9.0</strong> + <strong>Ng-Zorro</strong>搭建，
           服务端使用<strong>Node.js</strong> + <strong>Express</strong> + <strong>MongoDB</strong>开发。博客部署在阿里云，图片存储使用七牛云。<br/>
           博客致力于分享最新的前端知识以及记录个人踩过的坑，会不定期更新。如果你有任何问题或者对博客有任何建议，欢迎邮件联系我！
         </div>
@@ -41,7 +40,7 @@
       <div nz-col nzSpan="7" class="padleft">
         <div class="fotTitle">联系方式</div>
         <div class="fotContent">
-          <i nz-icon [iconfont]="'icon-tubiao209'"></i>
+          <i nz-icon [nzIconfont]="'icon-tubiao209'"></i>
           <span>qintb@qintengbo.com</span>
         </div>
         <div class="fotContent">
@@ -49,15 +48,15 @@
           <a href="https://github.com/qintengbo" title="github" target="_blank">github.com/qintengbo</a>
         </div>
         <div class="fotContent">
-          <i nz-icon [iconfont]="'icon-lofter'"></i>
+          <i nz-icon [nzIconfont]="'icon-lofter'"></i>
           <a href="http://qintengbo.lofter.com" title="lofter" target="_blank">qintengbo.lofter.com</a>
         </div>
         <div class="fotContent">
-          <i nz-icon [iconfont]="'icon-jianti'"></i>
+          <i nz-icon [nzIconfont]="'icon-jianti'"></i>
           <a href="https://www.jianshu.com/u/5f5a359361ac" title="简书" target="_blank">www.jianshu.com/u/5f5a359361ac</a>
         </div>
       </div>
     </div>
-    <p>Copyright © 2019 qintengbo.com. All Right Reserved <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备18152109号-1</a></p>
+    <p>Copyright © 2020 qintengbo.com. All Right Reserved <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备18152109号-1</a></p>
   </nz-footer>
 </nz-layout>

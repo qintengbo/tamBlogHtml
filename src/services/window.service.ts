@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ClassProvider, FactoryProvider, InjectionToken, PLATFORM_ID } from '@angular/core';
+import { ClassProvider, FactoryProvider, InjectionToken, PLATFORM_ID, Injectable } from '@angular/core';
 
 // 创建一个新的注入令牌，用于将window注入组件。
 export const WINDOW = new InjectionToken('WindowToken');
@@ -12,6 +12,7 @@ export abstract class WindowRef {
 }
 
 // 定义实现抽象类的类并返回本机window对象。
+@Injectable()
 export class BrowserWindowRef extends WindowRef {
   constructor() {
     super();

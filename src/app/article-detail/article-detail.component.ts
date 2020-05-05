@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
@@ -11,7 +11,7 @@ import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.less']
 })
-export class ArticleDetailComponent implements OnInit {
+export class ArticleDetailComponent implements OnInit, AfterViewInit {
   id: string; // 文章id
   preId: string; // 上一篇文章id
   nxtId: string; // 下一篇文章id
@@ -21,16 +21,11 @@ export class ArticleDetailComponent implements OnInit {
   size = 10;
   total = 0; // 全部评论条数
   mainTotal = 0; // 主评论条数
-  moreComment = true;
+	moreComment = true;
+	comment: any;
 
-  @ViewChild(CommentBoxComponent)
-  private comment: CommentBoxComponent;
-
-  @ViewChild(CommentBoxComponent)
-  private parentComment: CommentBoxComponent;
-
-  @ViewChild(CommentBoxComponent)
-  private childComment: CommentBoxComponent;
+  @ViewChildren(CommentBoxComponent)
+  private comments: QueryList<CommentBoxComponent>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -65,7 +60,7 @@ export class ArticleDetailComponent implements OnInit {
     this.httpRequestService.articleCommentListRequest(params).subscribe(res => {
       const { code, data, msg } = res;
       if (code === 0) {
-        data.list.forEach(item => {
+        data.list.forEach((item: any) => {
           item.isClick = false;
           if (item.reply.length > 0) {
             item.reply.forEach((childItem: { isClick: boolean; content: string; beCommenter: { name: any; }; }) => {
@@ -100,7 +95,7 @@ export class ArticleDetailComponent implements OnInit {
 
   // 发送
   submitForm = (data: any) => {
-    let ref: any;
+		let ref = null;
     const params = {
       relationId: this.id,
       ...data.value,
@@ -108,34 +103,35 @@ export class ArticleDetailComponent implements OnInit {
       imgCode: data.imgCode
     };
     if (data.index >= 0) {
+			[, ref] = this.comment;
       if (data.parentNum >= 0) {
         params.commentId = this.commentList[data.parentNum]._id;
         params.aimsId = this.commentList[data.parentNum].reply[data.index]._id;
         params.beCommenter = this.commentList[data.parentNum].reply[data.index].commenter._id;
-        ref = this.childComment;
       } else {
         params.commentId = this.commentList[data.index]._id;
         params.aimsId = this.commentList[data.index]._id;
         params.beCommenter = this.commentList[data.index].commenter._id;
-        ref = this.parentComment;
       }
     } else {
+			[ref] = this.comment;
       params.commentId = '';
       params.beCommenter = '';
       params.aimsId = '';
-      ref = this.comment;
     }
     this.httpRequestService.addCommentRequest(params).subscribe(res => {
       const { code, msg } = res;
       if (code === 0) {
-        this.commentList = [];
-        this.message.success(msg);
+				this.message.success(msg);
         ref.cancelSubmit();
-        this.getArticleCommentList(this.id);
-        ref.handleCancel();
+				ref.handleCancel();
+				setTimeout(() => {
+					this.commentList = [];
+					this.getArticleCommentList(this.id);
+				}, 0);
       } else {
-        this.message.error(msg);
-        ref.getNewImgCode();
+				this.message.error(msg);
+				ref.getNewImgCode();
       }
     });
   }
@@ -145,16 +141,40 @@ export class ArticleDetailComponent implements OnInit {
     e.preventDefault();
     data.isClick = !data.isClick;
     if (data.isMain) {
+			// 子评论的评论框不显示
       data.reply.forEach((item: { isClick: boolean; }) => {
         item.isClick = false;
-      });
+			});
+			// 同级主评论及它们的所有子评论的评论框都不显示
+			this.commentList.forEach((item: any) => {
+				if (item._id !== data._id) {
+					item.isClick = false;
+					if (item.reply.length > 0) {
+						item.reply.forEach((childItem: { isClick: boolean }) => {
+							childItem.isClick = false;
+						});
+					}
+				}
+			});
     } else {
-      parent.isClick = false;
+			parent.isClick = false;
+			// 同级的子评论的评论框都不显示
       parent.reply.forEach((item: { isClick: boolean; }, index: number) => {
         if (index !== num) {
           item.isClick = false;
         }
-      });
+			});
+			// 父级的同级主评论及它们的子评论的评论框都不显示
+			this.commentList.forEach((item: any) => {
+				if (item._id !== parent._id) {
+					item.isClick = false;
+					if (item.reply.length > 0) {
+						item.reply.forEach((childItem: { isClick: boolean }) => {
+							childItem.isClick = false;
+						});
+					}
+				}
+			});
     }
   }
 
@@ -171,7 +191,21 @@ export class ArticleDetailComponent implements OnInit {
 
   trackById(index: number, item: { _id: string }): string {
     return item._id;
+	}
+
+	// 获取页面上评论框的集合
+	filterComments() {
+    setTimeout(() => { 
+			this.comment = this.comments.map(p => p); 
+		}, 0);
   }
+	
+	ngAfterViewInit() {
+		this.filterComments();
+		this.comments.changes.subscribe(r => { 
+			this.filterComments(); 
+		});
+	}
 
   ngOnInit() {
     this.articleInfo = {

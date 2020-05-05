@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpRequestService } from 'services/httpRequest.service';
+import { Article } from 'class/article/article';
 
 @Component({
   selector: 'app-article-list',
@@ -10,7 +11,7 @@ import { HttpRequestService } from 'services/httpRequest.service';
 })
 export class ArticleListComponent implements OnInit {
   imgUrl = '';
-  articleList: Array<any> = []; // 文章列表
+  articleList: Array<Article> = []; // 文章列表
   classificationList: Array<any> = []; // 分类列表
   total = 0;
   params = { // 筛选列表请求参数

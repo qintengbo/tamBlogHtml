@@ -6,7 +6,7 @@
 	/>
 	<form class="formWrap" nz-form [formGroup]="commentForm" (ngSubmit)="submit($event, commentForm)">
 		<nz-form-item>
-			<nz-form-control [nzSpan]="24">
+			<nz-form-control [nzSpan]="24" [nzErrorTip]="contentErrorTpl">
 				<textarea
 					nz-input
 					maxlength="1000"
@@ -15,67 +15,89 @@
 					[nzAutosize]="{ minRows: 3, maxRows: 6 }"
 					(focus)="commentInputFocus()"
 				></textarea>
-				<nz-form-explain *ngIf="commentForm.get('content')?.dirty && commentForm.get('content')?.errors">
-					<ng-container *ngIf="commentForm.get('content')?.hasError('empty') || commentForm.get('content')?.hasError('required')">
+				<ng-template #contentErrorTpl let-control>
+					<ng-container *ngIf="control.hasError('required')">
 						评论内容不能为空哦！
 					</ng-container>
-				</nz-form-explain>
-				<span class="tips" *ngIf="isShow || commentForm.value.content"># 评论支持Markdown语法，字数限制1000字</span>
+				</ng-template>
+				<span class="tips" *ngIf="isShow || commentForm.value.content">* 评论支持Markdown语法，字数限制1000字</span>
 			</nz-form-control>
 		</nz-form-item>
-		<nz-form-item *ngIf="isShow || commentForm.value.content">
-			<nz-form-control [nzSpan]="3" class="bqWrap">
-				<button
-					class="emojiBtn"
-					type="button"
-					nz-button
-					nz-popover
-					nzPopoverTitle="Title"
-					[nzContent]="emojiWrapTemplate"
-					nzPlacement="bottomLeft"
-					nzTrigger="click"
-					[nzOverlayStyle]="{ left: '-12px' }"
-				>
-					<i nz-icon nzType="smile" nzTheme="outline"></i>
-				</button>
-				<span>按 Enter 发送</span>
-			</nz-form-control>
-			<nz-form-control [nzSpan]="6">
-				<nz-input-group [nzPrefix]="prefixUrl">
-					<input class="comInput" nz-input formControlName="avatar" placeholder="头像网址">
-				</nz-input-group>
-				<nz-form-explain *ngIf="commentForm.get('avatar')?.dirty && commentForm.get('avatar')?.errors">
-					头像网址不正确！
-				</nz-form-explain>
-			</nz-form-control>
-			<nz-form-control [nzSpan]="6">
-				<nz-input-group [nzPrefix]="prefixUser">
-					<input class="comInput" maxlength="10" nz-input formControlName="name" placeholder="你的昵称">
-				</nz-input-group>
-				<nz-form-explain *ngIf="commentForm.get('name')?.dirty && commentForm.get('name')?.errors">
-					<ng-container *ngIf="commentForm.get('name')?.hasError('empty') || commentForm.get('name')?.hasError('required')">
-						昵称不能为空哦！
-					</ng-container>
-				</nz-form-explain>
-			</nz-form-control>
-			<nz-form-control [nzSpan]="6">
-				<nz-input-group [nzPrefix]="prefixMail">
-					<input class="comInput" nz-input formControlName="email" placeholder="你的邮箱">
-				</nz-input-group>
-				<nz-form-explain *ngIf="commentForm.get('email')?.dirty && commentForm.get('email')?.errors">
-					<ng-container *ngIf="commentForm.get('email')?.hasError('email')">
-						邮箱格式不正确！
-					</ng-container>
-					<ng-container *ngIf="commentForm.get('email')?.hasError('required')">
-						邮箱不能为空哦！
-					</ng-container>
-				</nz-form-explain>
-			</nz-form-control>
-			<nz-form-control [nzSpan]="3">
-				<button class="submitBtn" nz-button nzType="primary">发送</button>
-				<button class="submitBtn marginLeft0" type="button" nz-button nzType="default" (click)="cancelSubmit()">取消</button>
-			</nz-form-control>
-		</nz-form-item>
+		<div nz-row [nzGutter]="16" *ngIf="isShow || commentForm.value.content">
+			<div nz-col [nzSpan]="4">
+				<nz-form-item>
+					<nz-form-control class="bqWrap">
+						<button
+							class="emojiBtn"
+							type="button"
+							nz-button
+							nz-popover
+							nzPopoverTitle="Title"
+							[nzPopoverContent]="emojiWrapTemplate"
+							nzTooltipContent="bottomLeft"
+							nzTooltipTrigger="click"
+							[nzOverlayStyle]="{ left: '-12px' }"
+						>
+							<i nz-icon nzType="smile" nzTheme="outline"></i>
+						</button>
+						<span>按 Enter 发送</span>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+			<div nz-col [nzSpan]="6">
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="avatarErrorTpl">
+						<nz-input-group nzPrefixIcon="global">
+							<input class="comInput" nz-input formControlName="avatar" placeholder="头像网址">
+						</nz-input-group>
+						<ng-template #avatarErrorTpl let-control>
+							<ng-container *ngIf="control.hasError('pattern')">
+								头像网址不正确！
+							</ng-container>
+						</ng-template>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+			<div nz-col [nzSpan]="5">
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="nameErrorTpl">
+						<nz-input-group nzPrefixIcon="user">
+							<input class="comInput" maxlength="10" nz-input formControlName="name" placeholder="你的昵称">
+						</nz-input-group>
+						<ng-template #nameErrorTpl let-control>
+							<ng-container *ngIf="control.hasError('required')">
+								昵称不能为空哦！
+							</ng-container>
+						</ng-template>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+			<div nz-col [nzSpan]="5">
+				<nz-form-item>
+					<nz-form-control [nzErrorTip]="emailErrorTpl">
+						<nz-input-group nzPrefixIcon="mail">
+							<input class="comInput" nz-input formControlName="email" placeholder="你的邮箱">
+						</nz-input-group>
+						<ng-template #emailErrorTpl let-control>
+							<ng-container *ngIf="control.hasError('email')">
+								邮箱格式不正确！
+							</ng-container>
+							<ng-container *ngIf="control.hasError('required')">
+								邮箱不能为空哦！
+							</ng-container>
+						</ng-template>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+			<div nz-col [nzSpan]="4">
+				<nz-form-item>
+					<nz-form-control>
+						<button class="submitBtn" nz-button nzType="primary">发送</button>
+						<button class="submitBtn marginLeft0" type="button" nz-button nzType="default" (click)="cancelSubmit()">取消</button>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+		</div>
 	</form>
 	<nz-modal
 		[(nzVisible)]="isVisible" 
@@ -88,6 +110,7 @@
 			<input 
 				class="modalInput" 
 				nz-input 
+				#imgCodeInput
 				placeholder="请输入验证码" 
 				[(ngModel)]="imgCodeText"
 				(keyup.enter)="handleOk($event)"
@@ -96,9 +119,6 @@
 		</div>
 	</nz-modal>
 </div>
-<ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
-<ng-template #prefixMail><i nz-icon type="mail"></i></ng-template>
-<ng-template #prefixUrl><i nz-icon type="global"></i></ng-template>
 <ng-template #emojiWrapTemplate>
 	<div class="popoverWrap">
 		<div class="orderBtnWrap">

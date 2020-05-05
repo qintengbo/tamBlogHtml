@@ -17,7 +17,7 @@
 							<i nz-icon nzType="calendar" nzTheme="outline"></i>
 							<i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
 						</span>
-						<span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
+						<span><i nz-icon [nzIconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
 						<span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ item.readNum }}</i></span>
 					</div>
 					<div class="articleLead">{{ item.lead }}</div>
@@ -26,7 +26,7 @@
 			<div class="articleClassWrap">
 				<div class="title"><i nz-icon nzType="file-text" nzTheme="outline"></i> 文章分类</div>
 				<div class="classBox" [ngClass]="{'select': params.classification === item._id}" *ngFor="let item of classificationList; trackBy: trackById" (click)="changeClassification(item._id)">
-					<i nz-icon [iconfont]="'icon-yuandianzhong'"></i>{{ item.name }} （<i>{{ item.articleNum }}</i>）
+					<i nz-icon [nzIconfont]="'icon-yuandianzhong'"></i>{{ item.name }} （<i>{{ item.articleNum }}</i>）
 				</div>
 			</div>
 			<div class="paginationWrap" *ngIf="total > 0">

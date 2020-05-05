@@ -6,7 +6,7 @@ const appRoutes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    data: { title: '分享前端技术和记录踩坑之旅的个人网站' }
+    data: { title: '分享前端技术和心得的个人网站' }
   },
   {
     path: 'articleList',
@@ -15,10 +15,6 @@ const appRoutes: Routes = [
   {
     path: 'articleDetail/:id',
     loadChildren: '@/article-detail/article-detail.module#ArticleDetailModule'
-  },
-  {
-    path: 'steppingPit',
-    loadChildren: '@/stepping-pit/stepping-pit.module#SteppingPitModule'
   },
   // 路由重定向
   {

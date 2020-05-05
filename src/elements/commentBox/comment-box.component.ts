@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { HttpRequestService } from 'services/httpRequest.service';
 import { NzMessageService } from 'ng-zorro-antd';
@@ -28,10 +28,12 @@ export class CommentBoxComponent implements OnInit {
   }
 
   @Input() index: number;
-  @Input() parentNum: number;
+	@Input() parentNum: number;
 
   @Output()
-  submitForm = new EventEmitter();
+	submitForm = new EventEmitter();
+	
+	@ViewChild('imgCodeInput') imgCodeInput: ElementRef;
 
   // 评论框获得焦点
   commentInputFocus(): void {
@@ -40,13 +42,17 @@ export class CommentBoxComponent implements OnInit {
 
   // 发送
   submit = (e: any, validateForm: any) => {
-    e.preventDefault();
+		e.preventDefault();
     for (const i of Object.keys(this.commentForm.controls)) {
       this.commentForm.controls[i].markAsDirty();
       this.commentForm.controls[i].updateValueAndValidity();
     }
     if (validateForm.valid) {
-      this.isVisible = true;
+			this.isVisible = true;
+			// 验证码输入框自动获取焦点
+			setTimeout(() => {
+				this.imgCodeInput.nativeElement.focus();
+			}, 500);
       this.imgCodeSrc = `${this.httpRequestService.getImgCode()}?${Math.random()}`;
     }
   }
@@ -63,22 +69,20 @@ export class CommentBoxComponent implements OnInit {
 
   // 自定义验证器
   validator = (control: FormControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { required: true };
-    } else if (control.value.match(/^\s*$/)) {
-      return { empty: true, error: true };
+    if (!control.value || control.value.match(/^\s*$/)) {
+      return { error: true, required: true };
     }
     return {};
   }
 
   // 更新验证码
-  getNewImgCode(): void {
+  getNewImgCode = (): void => {
     this.imgCodeText = '';
     this.imgCodeSrc = `${this.httpRequestService.getImgCode()}?${Math.random()}`;
   }
 
   // 关闭模态框
-  handleCancel(): void {
+  handleCancel = (): void => {
     this.isVisible = false;
     this.imgCodeText = '';
   }

@@ -10,7 +10,7 @@
       </div>
     </nz-carousel>
     <div class="downBtn">
-      <i nz-icon [iconfont]="'icon-xiajiantou'"></i>
+      <i nz-icon [nzIconfont]="'icon-xiajiantou'"></i>
     </div>
   </div>
   <div class="container">
@@ -25,7 +25,7 @@
           <i nz-icon nzType="calendar" nzTheme="outline"></i>
           <i>{{ articleNew.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
         </span>
-        <span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ articleNew.classification.name }}</span>
+        <span><i nz-icon [nzIconfont]="'icon-fenlei1'"></i>{{ articleNew.classification.name }}</span>
         <span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ articleNew.readNum }}</i></span>
       </div>
       <div class="leadWrp">{{ articleNew.lead }}</div>
@@ -45,7 +45,7 @@
               <i nz-icon nzType="calendar" nzTheme="outline"></i>
               <i>{{ item.updateDate | date: "y-MM-dd HH:mm:ss" }}</i>
             </span>
-            <span><i nz-icon [iconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
+            <span><i nz-icon [nzIconfont]="'icon-fenlei1'"></i>{{ item.classification.name }}</span>
             <span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ item.readNum }}</i></span>
           </div>
           <nz-divider></nz-divider>

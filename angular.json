@@ -119,15 +119,8 @@
               "**/node_modules/**"
             ]
           }
-        }
-      }
-    },
-    "tamBlogHtml-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
+				},
+				"e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
@@ -138,18 +131,12 @@
               "devServerTarget": "tamBlogHtml:serve:production"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     }
   },
-  "defaultProject": "tamBlogHtml"
+  "defaultProject": "tamBlogHtml",
+  "cli": {
+    "analytics": "8bca85c6-9f38-4f5c-998c-4787ab925673"
+  }
 }

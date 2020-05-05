@@ -1,5 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgDompurifyDomSanitizer } from '@tinkoff/ng-dompurify';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -45,8 +46,9 @@ registerLocaleData(zh);
     AppRoutingModule
   ],
   providers: [
-    { provide: NZ_I18N, useValue: zh_CN },
-    WINDOW_PROVIDERS
+		{ provide: NZ_I18N, useValue: zh_CN },
+		{ provide: DomSanitizer, useClass: NgDompurifyDomSanitizer },
+		WINDOW_PROVIDERS,
   ],
   bootstrap: [AppComponent]
 })
