@@ -21,7 +21,7 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
   size = 10;
   total = 0; // 全部评论条数
   mainTotal = 0; // 主评论条数
-	moreComment = true;
+	moreComment = false;
 	comment: any;
 
   @ViewChildren(CommentBoxComponent)
@@ -65,7 +65,7 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
           if (item.reply.length > 0) {
             item.reply.forEach((childItem: { isClick: boolean; content: string; beCommenter: { name: any; }; }) => {
               childItem.isClick = false;
-              childItem.content = `<span style="color: #51CCA8">@${childItem.beCommenter.name}</span>，` + childItem.content;
+							childItem.content = `<span class="highLightName">@${childItem.beCommenter.name}</span>，${childItem.content}`;
             });
           }
         });
@@ -123,9 +123,10 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
       const { code, msg } = res;
       if (code === 0) {
 				this.message.success(msg);
-        ref.cancelSubmit();
+        ref.resetForm();
 				ref.handleCancel();
 				setTimeout(() => {
+					this.page = 1;
 					this.commentList = [];
 					this.getArticleCommentList(this.id);
 				}, 0);
@@ -134,11 +135,11 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
 				ref.getNewImgCode();
       }
     });
-  }
+	}
 
   // 回复
-  reply(e: any, data: any, parent?: any, num?: number): void {
-    e.preventDefault();
+  reply(data: any, e?: any, parent?: any, num?: number ): void {
+    if (e) { e.preventDefault(); }
     data.isClick = !data.isClick;
     if (data.isMain) {
 			// 子评论的评论框不显示
@@ -176,7 +177,18 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
 				}
 			});
     }
-  }
+	}
+	
+	replyFn(params: any) {
+		const { index, parentNum } = params;
+		if (parentNum > 0) {
+			this.reply(this.commentList[parentNum].reply[index], undefined, this.commentList[parentNum], index);
+		} else if (parentNum === 0) {
+			this.reply(this.commentList[parentNum].reply[index], undefined, this.commentList[parentNum].reply[index], index);
+		} else {
+			this.reply(this.commentList[index]);
+		}
+	}
 
   // 加载更多评论
   loadMoreComment(): void {

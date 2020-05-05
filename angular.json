@@ -34,7 +34,7 @@
             "styles": [
               "src/styles.less",
               "src/global.less",
-              "src/preLightTheme.css"
+							"src/assets/markdown/preLightTheme.css"
             ],
             "scripts": [
               "node_modules/marked/lib/marked.js",

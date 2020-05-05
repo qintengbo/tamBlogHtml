@@ -15,7 +15,7 @@
 			<span><i nz-icon nzType="eye" nzTheme="outline"></i><i>{{ articleInfo.readNum }}</i></span>
 		</div>
 		<div class="leadWrp">{{ articleInfo.lead }}</div>
-		<div class="content" markdown [data]="articleInfo.content" ngPreserveWhitespaces></div>
+		<div class="content" name="markdown" markdown [data]="articleInfo.content" ngPreserveWhitespaces></div>
 		<div class="tagWrap">
 			<i nz-icon nzType="tag" nzTheme="outline"></i>
 			<nz-tag *ngFor="let item of articleInfo.tag"># {{ item.name }}</nz-tag>
@@ -42,7 +42,7 @@
 					<div class="name">{{ item.commenter.name }}<i>{{ item.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
 					<div class="commentContent" markdown [data]="item.content" ngPreserveWhitespaces></div>
 					<div class="comBtn">
-						<span (click)="reply($event, item)">
+						<span (click)="reply(item, $event)">
 							<i nz-icon [nzIconfont]="item.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ item.isClick ? '取消回复' : '回复' }}
 						</span>
 					</div>
@@ -50,6 +50,7 @@
 						*ngIf="item.isClick"
 						[index]="i" 
 						(submitForm)="submitForm($event)"
+						(reply)="replyFn($event)"
 					>
 					</app-comment-box>
 					<div class="childCommentWrap" *ngIf="item.reply.length > 0">
@@ -63,7 +64,7 @@
 								<div class="name">{{ childItem.commenter.name }}<i>{{ childItem.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
 								<div class="commentContent" markdown [data]="childItem.content" ngPreserveWhitespaces></div>
 								<div class="comBtn">
-									<span (click)="reply($event, childItem, item, n)">
+									<span (click)="reply(childItem, $event, item, n)">
 										<i nz-icon [nzIconfont]="!item.isClick && childItem.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ !item.isClick && childItem.isClick ? '取消回复' : '回复' }}
 									</span>
 								</div>
@@ -72,6 +73,7 @@
 									[index]="n" 
 									[parentNum]="i" 
 									(submitForm)="submitForm($event)"
+									(reply)="replyFn($event)"
 								>
 								</app-comment-box>
 							</div>
