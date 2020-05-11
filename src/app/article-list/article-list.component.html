@@ -29,7 +29,7 @@
 					<i nz-icon [nzIconfont]="'icon-yuandianzhong'"></i>{{ item.name }} （<i>{{ item.articleNum }}</i>）
 				</div>
 			</div>
-			<div class="paginationWrap" *ngIf="total > 0">
+			<div class="paginationWrap" *ngIf="total > params.size">
 				<nz-pagination [nzPageIndex]="params.page" [nzTotal]="total" [nzPageSize]="params.size" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
 			</div>
 		</div>

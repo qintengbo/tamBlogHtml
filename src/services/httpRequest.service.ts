@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Response } from 'class/common/response';
@@ -47,7 +47,7 @@ export class HttpRequestService {
 
   // 文章详情
   articleInfoRequest(id: string): Observable<Response> {
-    return this.http.get<Response>(`${this.path}/articleInfo`, { params: { id: id } }).pipe(
+    return this.http.get<Response>(`${this.path}/articleInfo`, { params: { id } }).pipe(
       catchError(this.handleError<any>('articleInfoRequest'))
     );
   }
@@ -69,7 +69,14 @@ export class HttpRequestService {
   // 获取图片验证码
   getImgCode(): string {
     return `${this.path}/captchaCode`;
-  }
+	}
+	
+	// 获取更多子评论
+	loadMoreChildComment(params: {}): Observable<Response> {
+		return this.http.get<Response>(`${this.path}/childCommentList`, { params }).pipe(
+			catchError(this.handleError<any>('loadMoreChildCommentReuqest'))
+		);
+	}
 
   /**
    * 处理失败的http操作

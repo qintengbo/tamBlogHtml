@@ -18,7 +18,8 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
   articleInfo: Article;
   commentList = []; // 评论列表
   page = 1;
-  size = 10;
+	size = 10;
+	childSize = 3; // 子评论每页条数
   total = 0; // 全部评论条数
   mainTotal = 0; // 主评论条数
 	moreComment = false;
@@ -60,16 +61,18 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
     this.httpRequestService.articleCommentListRequest(params).subscribe(res => {
       const { code, data, msg } = res;
       if (code === 0) {
-        data.list.forEach((item: any) => {
-          item.isClick = false;
-          if (item.reply.length > 0) {
-            item.reply.forEach((childItem: { isClick: boolean; content: string; beCommenter: { name: any; }; }) => {
-              childItem.isClick = false;
+				data.list = data.list.map((item: any) => {
+					item.isClick = false;
+					if (item.reply.length > 0) {
+						item.reply = item.reply.map((childItem: any) => {
+							childItem.isClick = false;
 							childItem.content = `<span class="highLightName">@${childItem.beCommenter.name}</span>，${childItem.content}`;
-            });
-          }
-        });
-        this.commentList = this.commentList.concat(data.list);
+							return childItem;
+						});
+					}
+					return item;
+				});
+				this.commentList = this.commentList.concat(data.list);
         this.total = data.total;
         this.mainTotal = data.mainTotal;
         if (this.page < Math.ceil(this.mainTotal / this.size)) {
@@ -94,24 +97,25 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
   }
 
   // 发送
-  submitForm = (data: any) => {
+  submitForm = (obj: any) => {
 		let ref = null;
+		const { index, parentNum, imgCode, value } = obj;
     const params = {
       relationId: this.id,
-      ...data.value,
-      isMain: data.index >= 0 ? false : true,
-      imgCode: data.imgCode
+      ...value,
+      isMain: index >= 0 ? false : true,
+      imgCode
     };
-    if (data.index >= 0) {
+    if (index >= 0) {
 			[, ref] = this.comment;
-      if (data.parentNum >= 0) {
-        params.commentId = this.commentList[data.parentNum]._id;
-        params.aimsId = this.commentList[data.parentNum].reply[data.index]._id;
-        params.beCommenter = this.commentList[data.parentNum].reply[data.index].commenter._id;
+      if (parentNum >= 0) {
+        params.commentId = this.commentList[parentNum]._id;
+        params.aimsId = this.commentList[parentNum].reply[index]._id;
+        params.beCommenter = this.commentList[parentNum].reply[index].commenter._id;
       } else {
-        params.commentId = this.commentList[data.index]._id;
-        params.aimsId = this.commentList[data.index]._id;
-        params.beCommenter = this.commentList[data.index].commenter._id;
+        params.commentId = this.commentList[index]._id;
+        params.aimsId = this.commentList[index]._id;
+        params.beCommenter = this.commentList[index].commenter._id;
       }
     } else {
 			[ref] = this.comment;
@@ -122,13 +126,30 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
     this.httpRequestService.addCommentRequest(params).subscribe(res => {
       const { code, msg } = res;
       if (code === 0) {
+				let { data } = res;
+				data = {
+					isClick: false,
+					...data
+				};
 				this.message.success(msg);
         ref.resetForm();
 				ref.handleCancel();
 				setTimeout(() => {
-					this.page = 1;
-					this.commentList = [];
-					this.getArticleCommentList(this.id);
+					if (index >= 0) {
+						const order = parentNum >= 0 ? parentNum : index;
+						const childPage = this.commentList[order].childPage;
+						const len = this.commentList[order].reply.length;
+						this.replyFn({ index, parentNum });
+						this.loadMoreChildComment(childPage, params.commentId, order, true, len);
+					} else {
+						this.commentList.unshift(data); // 首部添加新评论
+						this.total += 1;
+						this.mainTotal += 1;
+						if (this.page < Math.ceil(this.mainTotal / this.size)) {
+							this.commentList.pop(); // 尾部删除一个评论
+							this.moreComment = true;
+						}
+					}
 				}, 0);
       } else {
 				this.message.error(msg);
@@ -137,7 +158,7 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
     });
 	}
 
-  // 回复
+  // 点击回复按钮
   reply(data: any, e?: any, parent?: any, num?: number ): void {
     if (e) { e.preventDefault(); }
     data.isClick = !data.isClick;
@@ -190,18 +211,49 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-  // 加载更多评论
+  // 查看更多主评论
   loadMoreComment(): void {
-    this.page += 1;
-    if (this.page <= Math.ceil(this.mainTotal / this.size)) {
-      this.getArticleCommentList(this.id);
-    } else {
-      this.moreComment = false;
-      this.page -= 1;
-    }
-  }
+		this.page += 1;
+		this.getArticleCommentList(this.id);
+	}
+	
+	// 加载更多子评论
+	loadMoreChildComment(childPage: number, id: string, num: number, isAll?: boolean, skipNum?: number): void {
+		const params = {
+			childPage: childPage + 1, 
+			id, 
+			isAll, 
+			skipNum,
+			size: this.childSize
+		};
+		this.httpRequestService.loadMoreChildComment(params).subscribe(res => {
+			const { code, msg } = res;
+			let { data } = res;
+			if (code === 0) {
+				data = data.map((item: any) => {
+					item.isClick = false;
+					item.content = `<span class="highLightName">@${item.beCommenter.name}</span>，${item.content}`;
+					return item;
+				});
+				this.commentList = this.commentList.map((item, index) => {
+					if (index === num) {
+						item = {
+							...item,
+							reply: item.reply.concat(data),
+							childPage: childPage + 1,
+							replyTotal: isAll ? item.replyTotal + 1 : item.replyTotal
+						};
+						return item;
+					}
+					return item;
+				});
+			} else {
+				this.message.error(msg);
+			}
+		});
+	}
 
-  trackById(index: number, item: { _id: string }): string {
+  trackById(_index: number, item: { _id: string }): string {
     return item._id;
 	}
 

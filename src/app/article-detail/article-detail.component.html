@@ -36,11 +36,11 @@
 				<img 
 					[src]="item.commenter.avatar || '../../assets/images/touxiang.jpg'" 
 					alt="头像" 
-					onerror="this.src='../../assets/images/loadImg.png'"
+					onerror="this.src='../../assets/images/touxiang.jpg'"
 				/>
 				<div class="commentContainer">
 					<div class="name">{{ item.commenter.name }}<i>{{ item.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
-					<div class="commentContent" markdown [data]="item.content" ngPreserveWhitespaces></div>
+					<div class="commentContent" name="markdown" markdown [data]="item.content" ngPreserveWhitespaces></div>
 					<div class="comBtn">
 						<span (click)="reply(item, $event)">
 							<i nz-icon [nzIconfont]="item.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ item.isClick ? '取消回复' : '回复' }}
@@ -58,11 +58,11 @@
 							<img 
 								[src]="childItem.commenter.avatar || '../../assets/images/touxiang.jpg'" 
 								alt="头像" 
-								onerror="this.src='../../assets/images/loadImg.png'"
+								onerror="this.src='../../assets/images/touxiang.jpg'"
 							/>
 							<div class="commentContainer">
 								<div class="name">{{ childItem.commenter.name }}<i>{{ childItem.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
-								<div class="commentContent" markdown [data]="childItem.content" ngPreserveWhitespaces></div>
+								<div class="commentContent" name="markdown" markdown [data]="childItem.content" ngPreserveWhitespaces></div>
 								<div class="comBtn">
 									<span (click)="reply(childItem, $event, item, n)">
 										<i nz-icon [nzIconfont]="!item.isClick && childItem.isClick ? 'icon-cancel' : 'icon-pinglun2'"></i> {{ !item.isClick && childItem.isClick ? '取消回复' : '回复' }}
@@ -78,11 +78,14 @@
 								</app-comment-box>
 							</div>
 						</div>
+						<div class="loadMore" *ngIf="item.reply.length < item.replyTotal">
+							<span (click)="loadMoreChildComment(item.childPage, item._id, i)">加载更多</span>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="pageination" *ngIf="moreComment">
-				<span (click)="loadMoreComment()"><i nz-icon nzType="arrow-down" nzTheme="outline"></i> 更多评论</span>
+				<span (click)="loadMoreComment()">查看更多 <i nz-icon nzType="right" nzTheme="outline"></i></span>
 			</div>
 		</div>
 	</div>
