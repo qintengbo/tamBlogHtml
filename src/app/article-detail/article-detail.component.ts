@@ -93,6 +93,9 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
 
   // 跳转到上一篇或下一篇
   goToOtherArticle(id: string): void {
+		this.commentList = [];
+		this.mainTotal = 0;
+		this.total = 0;
     this.router.navigate(['/articleDetail', id]);
   }
 
@@ -226,7 +229,7 @@ export class ArticleDetailComponent implements OnInit, AfterViewInit {
 			skipNum,
 			size: this.childSize
 		};
-		this.httpRequestService.loadMoreChildComment(params).subscribe(res => {
+		this.httpRequestService.loadMoreChildCommentRequest(params).subscribe(res => {
 			const { code, msg } = res;
 			let { data } = res;
 			if (code === 0) {

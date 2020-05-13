@@ -2,6 +2,6 @@
 export class Response {
   code: number;
   msg: string;
-  token: string;
-  data: any;
+	data?: any;
+	error?: string;
 }

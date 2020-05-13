@@ -72,9 +72,9 @@ export class HttpRequestService {
 	}
 	
 	// 获取更多子评论
-	loadMoreChildComment(params: {}): Observable<Response> {
+	loadMoreChildCommentRequest(params: {}): Observable<Response> {
 		return this.http.get<Response>(`${this.path}/childCommentList`, { params }).pipe(
-			catchError(this.handleError<any>('loadMoreChildCommentReuqest'))
+			catchError(this.handleError<any>('loadMoreChildCommentRequest'))
 		);
 	}
 
