@@ -80,10 +80,21 @@ export class CommentBoxComponent implements OnInit {
 		this.isShow = false;
 	}
 
-  // 自定义验证器
+  // 评论内容自定义验证器
   validator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value || control.value.match(/^\s*$/)) {
       return { error: true, required: true };
+    }
+    return {};
+  }
+
+  // 昵称自定义验证器
+  nameValidator = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value || control.value.match(/^\s*$/)) {
+      return { error: true, required: true };
+    }
+    if (control.value.includes('覃腾波')) {
+      return { error: true, name: true };
     }
     return {};
   }
@@ -138,7 +149,7 @@ export class CommentBoxComponent implements OnInit {
     // 初始化评论表单
     this.commentForm = this.fb.group({
       content: [ '', [ this.validator ] ],
-      name: [ null, [ this.validator ] ],
+      name: [ null, [ this.nameValidator ] ],
       email: [ null, [ Validators.required, Validators.email ] ],
       avatar: [ '', [ Validators.pattern(/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/) ] ]
     });

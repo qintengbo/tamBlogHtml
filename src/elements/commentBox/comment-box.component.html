@@ -11,8 +11,8 @@
 					nz-input
 					maxlength="1000"
 					formControlName="content"
-					placeholder="输入你想说的吧……"
-					[nzAutosize]="{ minRows: 3, maxRows: 6 }"
+					placeholder="写一写你的疑问或者奇思妙想吧……"
+					[nzAutosize]="{ minRows: 3, maxRows: 8 }"
 					(focus)="commentInputFocus()"
 				></textarea>
 				<ng-template #contentErrorTpl let-control>
@@ -66,6 +66,9 @@
 						<ng-template #nameErrorTpl let-control>
 							<ng-container *ngIf="control.hasError('required')">
 								昵称不能为空哦！
+              </ng-container>
+              <ng-container *ngIf="control.hasError('name')">
+								昵称不能包含作者姓名哦！
 							</ng-container>
 						</ng-template>
 					</nz-form-control>
