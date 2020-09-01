@@ -10,11 +10,11 @@ const appRoutes: Routes = [
   },
   {
     path: 'articleList',
-    loadChildren: '@/article-list/article-list.module#ArticleListModule'
+    loadChildren: () => import('@/article-list/article-list.module').then(m => m.ArticleListModule)
   },
   {
     path: 'articleDetail/:id',
-    loadChildren: '@/article-detail/article-detail.module#ArticleDetailModule'
+    loadChildren: () => import('@/article-detail/article-detail.module').then(m => m.ArticleDetailModule)
   },
   // 路由重定向
   {
