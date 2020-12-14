@@ -60,7 +60,7 @@
 								onerror="this.src='../../assets/images/touxiang.jpg'"
 							/>
 							<div class="commentContainer">
-								<div class="name">{{ childItem.commenter.name }}<i>{{ childItem.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
+								<div class="name">{{ childItem.commenter.name }} <span>(作者)</span><i>{{ childItem.createDate | date: "y-MM-dd HH:mm:ss" }}</i></div>
 								<div class="commentContent" name="markdown" markdown [data]="childItem.content" ngPreserveWhitespaces></div>
 								<div class="comBtn">
 									<span (click)="reply(childItem, $event, item, n)">
