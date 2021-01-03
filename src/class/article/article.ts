@@ -1,5 +1,5 @@
 // 文章类
-export class Article {
+export interface Article {
   _id: string;
   content: string;
   lead: string;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpRequestService } from 'services/httpRequest.service';
-import { Article } from 'class/article/article';
+import { Article } from 'class/article/Article';
 
 @Component({
   selector: 'app-article-list',
