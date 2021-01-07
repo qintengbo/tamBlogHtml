@@ -1,10 +1,13 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { NzIconService } from 'ng-zorro-antd';
+import * as platform from 'platform';
+import * as CryptoJs from 'crypto-js';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { WINDOW } from 'services/window.service';
+import { HttpRequestService } from 'services/httpRequest.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +23,7 @@ export class AppComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private iconService: NzIconService,
+    private httpRequestService: HttpRequestService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(WINDOW) private window: Window
   ) {
@@ -64,5 +68,14 @@ export class AppComponent implements OnInit {
         this.isNavFixed = false;
       }
     });
+
+    /**
+     * 访客埋点
+     */
+    const { name, os: { family } } = platform;
+    const { AES } = CryptoJs;
+    // 加密数据
+    const cipherText = AES.encrypt(JSON.stringify({ browser: name, os: family }), 'tamBlog').toString();
+    this.httpRequestService.setVistorsBuriedPointRequest({ t: cipherText }).subscribe(() => {});
   }
 }

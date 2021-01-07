@@ -76,7 +76,14 @@ export class HttpRequestService {
 		return this.http.get<Response>(`${this.path}/childCommentList`, { params }).pipe(
 			catchError(this.handleError<any>('loadMoreChildCommentRequest'))
 		);
-	}
+  }
+  
+  // 访客埋点
+  setVistorsBuriedPointRequest(data: {}): Observable<Response> {
+    return this.http.post<Response>(`${this.path}/webPv`, data, this.httpOptions).pipe(
+      catchError(this.handleError<any>('setVistorsBuriedPointRequest'))
+    );
+  }
 
   /**
    * 处理失败的http操作
