@@ -1,5 +1,5 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
-import { NzIconService } from 'ng-zorro-antd';
+import { NzIconService } from 'ng-zorro-antd/icon';
 import * as platform from 'platform';
 import * as CryptoJs from 'crypto-js';
 import { filter, map, mergeMap } from 'rxjs/operators';

@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { HttpRequestService } from 'services/httpRequest.service';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import EmojiLib from 'assets/emojis';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { HttpRequestService } from 'services/httpRequest.service';
 import { Article } from 'class/article/Article';
 import { CommentBoxComponent } from 'elements/commentBox/comment-box.component';
